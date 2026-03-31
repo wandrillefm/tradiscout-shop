@@ -343,7 +343,7 @@
     grid.innerHTML = PRODUCTS.map(p => {
       const t = TYPES.find(x => x.id === p.type);
       const d = DESIGNS.find(x => x.key === p.design);
-      const defaultImg = imgSrc(p.type, 'blanc', p.design);
+      const defaultImg = imgSrc(p.type, 'bleu', p.design);
       return `
         <div class="grid-card" onclick="openLb('${p.type}', '${p.design}')">
           <img src="${defaultImg}" alt="${t.label} ${d.label}" onerror="this.style.background='#ddd';this.src=''" />
