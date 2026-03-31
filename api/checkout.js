@@ -31,9 +31,9 @@ export default async function handler(req, res) {
   // ── Labels ──────────────────────────────────────────────────────────
   const typeLabels = { tshirt: 'T-Shirt', sweat: 'Sweat', hoodie: 'Hoodie' };
   const designLabels = {
-    '1': 'Laisse Dieu agir...',
-    '2': 'Toujours prêt...',
-    '3': 'Per aspera ad astra',
+    '1': 'Tradiscout',
+    '2': 'Double Croix',
+    '3': 'Deus Vult',
     '4': "Verso l'Alto"
   };
 
