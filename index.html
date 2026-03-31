@@ -3,313 +3,233 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Verso L'Alto — Boutique Tradiscout</title>
+  <title>Boutique — Tradiscout</title>
   
-  <link href="https://fonts.googleapis.com/css2?family=Sanchez&family=Uncial+Antiqua&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Sanchez&family=Uncial+Antiqua&family=Cormorant+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
 
   <style>
-    /* ─── VARIABLES DE TON MAIN.CSS ─── */
     :root {
-      --bg:     #e2e5b3; /* Ton beige */
-      --navy:   #0a1d37; /* Ton marine */
-      --overlay: rgba(226, 229, 179, 0.7);
+      --bg: #e2e5b3;
+      --navy: #0a1d37;
+      --white: #fffcf0;
     }
 
-    /* ─── RESET & BASE ─── */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
     body {
       background-color: var(--bg);
-      background-image: linear-gradient(var(--overlay), var(--overlay)), url('IMG_5189.jpeg');
+      background-image: linear-gradient(rgba(226,229,179,0.7), rgba(226,229,179,0.7)), url('IMG_5189.jpeg');
       background-size: cover;
       background-attachment: fixed;
       color: var(--navy);
       font-family: 'Sanchez', serif;
-      line-height: 1.6;
-    }
-
-    /* ─── HEADER ─── */
-    header {
       padding: 2rem;
-      text-align: center;
-      border-bottom: 1px solid rgba(10, 29, 55, 0.1);
     }
-    .logo {
-      font-family: 'Uncial Antiqua', cursive;
-      font-size: 2.5rem;
-      text-transform: lowercase;
-      letter-spacing: -1px;
-    }
-    .logo span { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.8rem; }
 
-    /* ─── BOUTON PANIER FLOTTANT ─── */
-    .cart-trigger {
-      position: fixed;
-      top: 2rem;
-      right: 2rem;
-      background: var(--navy);
-      color: var(--bg);
-      border: none;
-      padding: 0.8rem 1.2rem;
-      font-family: 'Uncial Antiqua';
-      cursor: pointer;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .cart-count { background: var(--bg); color: var(--navy); padding: 2px 8px; border-radius: 20px; font-size: 0.8rem; }
+    header { text-align: center; margin-bottom: 3rem; }
+    h1 { font-family: 'Uncial Antiqua'; font-size: 3rem; text-transform: lowercase; }
 
-    /* ─── LAYOUT ─── */
-    .container {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 4rem 2rem;
+    /* ─── GRILLE PRODUITS ─── */
+    .product-grid {
       display: grid;
-      grid-template-columns: 1fr 400px;
-      gap: 4rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      /* 6 par ligne sur PC */
+      grid-template-columns: repeat(6, 1fr);
+      gap: 20px;
     }
 
-    .hero-text { grid-column: 1 / -1; text-align: center; margin-bottom: 2rem; }
-    .hero-text h1 { font-family: 'Uncial Antiqua'; font-size: 3rem; margin-bottom: 1rem; }
-
-    /* ─── VISUEL PRODUIT ─── */
-    .preview-sticky { position: sticky; top: 2rem; }
-    .garment-visual {
-      aspect-ratio: 3/4;
+    .product-card {
       background: rgba(255, 255, 255, 0.2);
       border: 1px solid var(--navy);
-      display: flex;
-      flex-direction: column;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    .product-card:hover { transform: translateY(-5px); }
+
+    .product-img {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      border-bottom: 1px solid var(--navy);
+      display: block;
+    }
+
+    .product-info { padding: 10px; text-align: center; }
+    .product-info h3 { font-family: 'Uncial Antiqua'; font-size: 0.9rem; }
+    .product-info p { font-size: 0.8rem; opacity: 0.8; }
+
+    /* ─── LIGHTBOX (MODAL) ─── */
+    .modal {
+      position: fixed; inset: 0;
+      background: rgba(10, 29, 55, 0.8);
+      display: none; /* Caché par défaut */
       align-items: center;
       justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+    .modal.open { display: flex; }
+
+    .modal-content {
+      background: var(--bg);
+      width: 100%;
+      max-width: 900px;
+      border: 2px solid var(--navy);
+      display: grid;
+      grid-template-columns: 1fr 1fr; /* Image à gauche, config à droite */
       position: relative;
-      overflow: hidden;
-    }
-    .garment-visual.marine { background: var(--navy); color: var(--bg); }
-    .garment-visual.blanc { background: #fffcf0; }
-
-    .garment-shape { width: 65%; transition: all 0.3s; }
-    .garment-path { stroke: var(--navy); stroke-width: 1.5; fill: transparent; }
-    .garment-visual.marine .garment-path { stroke: var(--bg); }
-
-    .design-on-garment {
-      position: absolute;
-      bottom: 22%;
-      width: 60%;
-      text-align: center;
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-size: 0.9rem;
-      line-height: 1.3;
     }
 
-    .price-tag {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      font-family: 'Uncial Antiqua';
-      font-size: 2rem;
+    .modal-close {
+      position: absolute; top: 10px; right: 15px;
+      font-size: 2rem; cursor: pointer; z-index: 10;
     }
 
-    /* ─── CONFIGURATION ─── */
-    .config-panel { display: flex; flex-direction: column; gap: 2rem; }
-    .section-title {
-      font-family: 'Uncial Antiqua';
-      font-size: 0.9rem;
-      border-bottom: 1px solid var(--navy);
-      padding-bottom: 5px;
-      margin-bottom: 15px;
+    .modal-image-side img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
 
-    .grid-btns { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px; }
-    
-    button.opt {
-      background: rgba(10, 29, 55, 0.05);
+    .modal-config-side { padding: 30px; display: flex; flex-direction: column; gap: 20px; }
+    .modal-config-side h2 { font-family: 'Uncial Antiqua'; }
+
+    /* ─── SELECTEURS ─── */
+    .selector-label { font-size: 0.7rem; font-weight: bold; text-transform: uppercase; margin-bottom: 5px; }
+    .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn-opt {
+      padding: 8px 15px;
       border: 1px solid var(--navy);
-      color: var(--navy);
-      padding: 12px;
+      background: transparent;
       font-family: 'Sanchez';
       cursor: pointer;
-      transition: 0.3s;
     }
-    button.opt.active { background: var(--navy); color: var(--bg); }
-    button.opt:hover:not(.active) { background: rgba(10, 29, 55, 0.1); }
+    .btn-opt.active { background: var(--navy); color: var(--bg); }
 
-    .design-btn { font-size: 0.8rem; line-height: 1.4; }
-
-    .add-to-cart-btn {
-      width: 100%;
-      padding: 20px;
+    .add-btn {
+      margin-top: auto;
+      padding: 15px;
       background: var(--navy);
       color: var(--bg);
       border: none;
       font-family: 'Uncial Antiqua';
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       cursor: pointer;
-      margin-top: 20px;
     }
-    .add-to-cart-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
-    /* ─── PANIER (DRAWER) ─── */
-    .drawer {
-      position: fixed; top: 0; right: 0; width: 400px; height: 100%;
-      background: var(--bg); border-left: 2px solid var(--navy);
-      z-index: 200; transform: translateX(100%); transition: 0.4s;
-      padding: 2rem; display: flex; flex-direction: column;
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 1024px) {
+      .product-grid { grid-template-columns: repeat(3, 1fr); } /* 3 par ligne sur tel/tablette */
     }
-    .drawer.open { transform: translateX(0); }
-    .overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.5);
-      visibility: hidden; opacity: 0; transition: 0.3s; z-index: 199;
-    }
-    .overlay.open { visibility: visible; opacity: 1; }
 
-    @media (max-width: 850px) {
-      .container { grid-template-columns: 1fr; }
-      .cart-trigger { top: auto; bottom: 20px; right: 20px; }
+    @media (max-width: 768px) {
+      .modal-content { grid-template-columns: 1fr; max-height: 90vh; overflow-y: auto; }
+      .modal-image-side { aspect-ratio: 1/1; }
     }
   </style>
 </head>
 <body>
 
-  <button class="cart-trigger" onclick="toggleCart()">
-    Panier <span class="cart-count" id="cartCount">0</span>
-  </button>
+<header>
+  <h1>la boutique</h1>
+</header>
 
-  <header>
-    <div class="logo">Verso <span>L'Alto</span></div>
-  </header>
-
-  <main class="container">
-    <div class="hero-text">
-      <h1>La boutique <em>scout</em>.</h1>
-      <p>Personnalise ton équipement Tradiscout.</p>
-    </div>
-
-    <div class="preview-sticky">
-      <div class="garment-visual" id="visual">
-        <div class="price-tag" id="priceLabel">17 €</div>
-        <div class="garment-shape" id="svgContainer"></div>
-        <div class="design-on-garment" id="designPreview">Choisis une citation</div>
-      </div>
-    </div>
-
-    <div class="config-panel">
-      
-      <div>
-        <div class="section-title">01. Article</div>
-        <div class="grid-btns">
-          <button class="opt active" onclick="set('type', 'tshirt', 17, this)">T-Shirt</button>
-          <button class="opt" onclick="set('type', 'sweat', 33, this)">Sweat</button>
-          <button class="opt" onclick="set('type', 'hoodie', 37, this)">Hoodie</button>
-        </div>
-      </div>
-
-      <div>
-        <div class="section-title">02. Taille</div>
-        <div class="grid-btns">
-          <button class="opt" onclick="set('size', 'S', null, this)">S</button>
-          <button class="opt" onclick="set('size', 'M', null, this)">M</button>
-          <button class="opt" onclick="set('size', 'L', null, this)">L</button>
-          <button class="opt" onclick="set('size', 'XL', null, this)">XL</button>
-        </div>
-      </div>
-
-      <div>
-        <div class="section-title">03. Couleur</div>
-        <div class="grid-btns">
-          <button class="opt" onclick="set('color', 'blanc', null, this)">Coton</button>
-          <button class="opt" onclick="set('color', 'marine', null, this)">Marine</button>
-        </div>
-      </div>
-
-      <div>
-        <div class="section-title">04. Citation</div>
-        <div class="grid-btns" style="grid-template-columns: 1fr;">
-          <button class="opt design-btn" onclick="set('design', '1', null, this)">« Laisse Dieu agir, et agis avec Dieu. »</button>
-          <button class="opt design-btn" onclick="set('design', '2', null, this)">« Toujours prêt, toujours debout. »</button>
-          <button class="opt design-btn" onclick="set('design', '3', null, this)">« Per aspera ad astra. »</button>
-        </div>
-      </div>
-
-      <button class="add-to-cart-btn" id="addBtn" disabled onclick="add()">Ajouter au panier</button>
-    </div>
-  </main>
-
-  <div class="overlay" id="overlay" onclick="toggleCart()"></div>
-  <div class="drawer" id="drawer">
-    <h2 style="font-family: 'Uncial Antiqua'; margin-bottom: 2rem;">Ton Panier</h2>
-    <div id="cartList" style="flex:1">
-      <p style="opacity: 0.5;">Le panier est vide.</p>
-    </div>
-    <div style="border-top: 1px solid var(--navy); padding-top: 1rem;">
-      <div style="display:flex; justify-content: space-between; font-family: 'Uncial Antiqua'; font-size: 1.5rem;">
-        <span>Total</span><span id="totalLabel">0 €</span>
-      </div>
-      <button class="add-to-cart-btn" style="background: var(--navy);">Passer au paiement</button>
-    </div>
+<div class="product-grid" id="grid">
   </div>
 
-  <script>
-    const state = { type: 'tshirt', size: '', color: '', design: '', price: 17 };
-    let cart = [];
-
-    const SVGS = {
-      tshirt: `<svg viewBox="0 0 200 220"><path class="garment-path" d="M60 20 L20 60 L50 75 L50 200 L150 200 L150 75 L180 60 L140 20 L115 40 C110 50 90 50 85 40 Z"/></svg>`,
-      sweat: `<svg viewBox="0 0 200 230"><path class="garment-path" d="M60 25 L15 70 L45 82 L45 210 L155 210 L155 82 L185 70 L140 25 L118 45 C113 56 87 56 82 45 Z"/></svg>`,
-      hoodie: `<svg viewBox="0 0 200 240"><path class="garment-path" d="M60 30 L15 75 L45 88 L45 215 L155 215 L155 88 L185 75 L140 30 C130 20 115 15 100 15 C85 15 70 20 60 30 Z"/></svg>`
-    };
-
-    function set(key, val, price, btn) {
-      state[key] = val;
-      if(price) state.price = price;
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <span class="modal-close" onclick="closeModal()">×</span>
+    <div class="modal-image-side">
+      <img src="" id="modalImg" alt="Produit">
+    </div>
+    <div class="modal-config-side">
+      <h2 id="modalTitle">Nom du produit</h2>
+      <p id="modalPrice" style="font-size: 1.5rem; font-family: 'Uncial Antiqua';">00 €</p>
       
-      // Update UI buttons
-      btn.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+      <div>
+        <p class="selector-label">Taille</p>
+        <div class="btn-group">
+          <button class="btn-opt" onclick="select(this)">S</button>
+          <button class="btn-opt active" onclick="select(this)">M</button>
+          <button class="btn-opt" onclick="select(this)">L</button>
+          <button class="btn-opt" onclick="select(this)">XL</button>
+        </div>
+      </div>
 
-      // Update Visual
-      document.getElementById('svgContainer').innerHTML = SVGS[state.type] || '';
-      document.getElementById('visual').className = 'garment-visual ' + state.color;
-      document.getElementById('designPreview').innerText = state.design ? document.querySelector('.opt.active.design-btn').innerText : 'Choisis une citation';
-      document.getElementById('priceLabel').innerText = state.price + ' €';
+      <div>
+        <p class="selector-label">Couleur</p>
+        <div class="btn-group">
+          <button class="btn-opt active" onclick="select(this)">Marine</button>
+          <button class="btn-opt" onclick="select(this)">Coton</button>
+        </div>
+      </div>
 
-      // Validation
-      document.getElementById('addBtn').disabled = !(state.type && state.size && state.color && state.design);
-    }
+      <button class="add-btn" onclick="addToCart()">Ajouter au panier</button>
+    </div>
+  </div>
+</div>
 
-    function add() {
-      cart.push({...state});
-      updateCartUI();
-      toggleCart();
-    }
+<script>
+  // Liste de tes produits
+  const products = [
+    { id: 1, name: "T-Shirt Verso L'Alto", price: 17, img: "img1.jpg" },
+    { id: 2, name: "Sweat Ad Astra", price: 33, img: "img2.jpg" },
+    { id: 3, name: "Hoodie Scout", price: 37, img: "img3.jpg" },
+    { id: 4, name: "T-Shirt Toujours Prêt", price: 17, img: "img4.jpg" },
+    { id: 5, name: "Sweat Totus Tuus", price: 33, img: "img5.jpg" },
+    { id: 6, name: "Veste de camp", price: 45, img: "img6.jpg" },
+    // Ajoute autant de produits que tu veux, la grille suivra
+  ];
 
-    function toggleCart() {
-      document.getElementById('drawer').classList.toggle('open');
-      document.getElementById('overlay').classList.toggle('open');
-    }
+  const grid = document.getElementById('grid');
+  const modal = document.getElementById('modal');
 
-    function updateCartUI() {
-      document.getElementById('cartCount').innerText = cart.length;
-      const total = cart.reduce((acc, item) => acc + item.price, 0);
-      document.getElementById('totalLabel').innerText = total + ' €';
-      
-      const list = document.getElementById('cartList');
-      if(cart.length === 0) {
-        list.innerHTML = '<p>Panier vide.</p>';
-      } else {
-        list.innerHTML = cart.map((item, index) => `
-          <div style="margin-bottom:15px; border-bottom:1px solid rgba(10,29,55,0.1); padding-bottom:10px">
-            <strong>${item.type.toUpperCase()}</strong> (${item.size}) - ${item.price}€<br>
-            <small>${item.color} / Design sélectionné</small>
-          </div>
-        `).join('');
-      }
-    }
+  // Génération de la grille
+  products.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'product-card';
+    card.onclick = () => openModal(p);
+    card.innerHTML = `
+      <img src="${p.img}" class="product-img">
+      <div class="product-info">
+        <h3>${p.name}</h3>
+        <p>${p.price} €</p>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
 
-    // Init
-    document.getElementById('svgContainer').innerHTML = SVGS.tshirt;
-  </script>
+  function openModal(p) {
+    document.getElementById('modalImg').src = p.img;
+    document.getElementById('modalTitle').innerText = p.name;
+    document.getElementById('modalPrice').innerText = p.price + " €";
+    modal.classList.add('open');
+  }
+
+  function closeModal() {
+    modal.classList.remove('open');
+  }
+
+  function select(btn) {
+    // Désactive les autres boutons du même groupe
+    btn.parentElement.querySelectorAll('.btn-opt').forEach(b => b.classList.remove('active'));
+    // Active le cliqué
+    btn.classList.add('active');
+  }
+
+  function addToCart() {
+    alert("Produit ajouté !");
+    closeModal();
+  }
+
+  // Fermer la modal si on clique à côté du contenu
+  window.onclick = function(event) {
+    if (event.target == modal) closeModal();
+  }
+</script>
+
 </body>
 </html>
