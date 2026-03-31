@@ -8,8 +8,8 @@
   <link rel="icon" type="image/x-icon" href="FINAL (1).png">
   <style>
     :root {
-      --navy: #2C3776;   /* Ton bleu */
-      --bg: #F8F2E7;     /* Ton beige */
+      --navy: #2C3776;
+      --bg: #F8F2E7;
       --or: #c9a84c;
       --gris: #6b6b6b;
     }
@@ -22,7 +22,6 @@
       min-height: 100vh;
     }
 
-    /* HEADER */
     header {
       padding: 1.5rem 3rem;
       display: flex;
@@ -41,7 +40,6 @@
       color: var(--navy);
       text-transform: lowercase;
     }
-
     .cart-btn {
       background: var(--navy);
       border: none;
@@ -54,90 +52,185 @@
       font-family: 'DM Mono', monospace;
       font-size: 0.7rem;
     }
-    .cart-count { background: var(--or); color: white; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; }
-
-    /* LAYOUT */
-    .shop-layout {
-      display: grid;
-      grid-template-columns: 1fr 400px;
-      gap: 3rem;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 3rem;
+    .cart-count {
+      background: var(--or);
+      color: white;
+      border-radius: 50%;
+      width: 18px; height: 18px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.6rem;
     }
 
-    /* GALERIE GAUCHE */
-    .product-gallery {
+    .section-header {
+      max-width: 900px;
+      margin: 2.5rem auto 0;
+      padding: 0 2rem 0.8rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-bottom: 1px solid rgba(44,55,118,0.15);
+    }
+    .section-header h2 {
+      font-family: 'Uncial Antiqua', serif;
+      font-size: 1.1rem;
+    }
+    .section-header span {
+      font-size: 0.7rem;
+      color: var(--or);
+    }
+
+    .product-list {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 2rem 0;
       display: flex;
       flex-direction: column;
-      gap: 1.5rem;
+      border-left: 1px solid rgba(44,55,118,0.1);
+      border-right: 1px solid rgba(44,55,118,0.1);
     }
-    .product-img-card {
-      background: white;
-      border: 1px solid rgba(44, 55, 118, 0.1);
-      padding: 10px;
-      cursor: pointer;
-      transition: 0.3s;
-      text-align: center;
-    }
-    .product-img-card:hover, .product-img-card.selected {
-      border-color: var(--navy);
-      box-shadow: 0 4px 15px rgba(44, 55, 118, 0.1);
-    }
-    .product-img-card img { width: 100%; height: auto; display: block; margin-bottom: 10px; }
-    .product-img-card h3 { font-family: 'Uncial Antiqua', serif; font-size: 0.9rem; }
+    .product-list:last-of-type { padding-bottom: 4rem; }
 
-    /* CONFIG DROITE */
-    .config-panel { position: sticky; top: 7rem; height: fit-content; }
-    .config-title { font-family: 'Uncial Antiqua', serif; font-size: 2.2rem; margin-bottom: 1rem; }
-    
-    .config-section { margin-bottom: 2rem; }
-    .config-label {
-      font-size: 0.6rem;
+    .product-card {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      background: white;
+      border-bottom: 1px solid rgba(44, 55, 118, 0.07);
+      transition: box-shadow 0.2s;
+      position: relative;
+    }
+    .product-card:hover {
+      box-shadow: 0 4px 20px rgba(44, 55, 118, 0.09);
+      z-index: 1;
+    }
+
+    .card-image {
+      aspect-ratio: 2 / 1;
+      overflow: hidden;
+      background: #ede9e0;
+    }
+    .card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s;
+    }
+    .product-card:hover .card-image img { transform: scale(1.03); }
+
+    .card-config {
+      padding: 1.1rem 1.3rem 0.9rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      border-left: 1px solid rgba(44, 55, 118, 0.07);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    .card-name {
+      font-family: 'Uncial Antiqua', serif;
+      font-size: 0.9rem;
+    }
+    .card-price {
+      font-size: 0.78rem;
+      color: var(--or);
+    }
+    .card-design-tag {
+      font-size: 0.52rem;
       text-transform: uppercase;
       letter-spacing: 0.1em;
       color: var(--gris);
-      margin-bottom: 0.8rem;
-      display: block;
-      border-bottom: 1px solid rgba(44, 55, 118, 0.1);
+      margin-top: 1px;
     }
 
-    .options-grid { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .option-group { display: flex; flex-direction: column; gap: 0.28rem; }
+    .option-label {
+      font-size: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--gris);
+    }
+    .option-btns { display: flex; flex-wrap: wrap; gap: 0.22rem; }
     .opt-btn {
       border: 1px solid rgba(44, 55, 118, 0.2);
       background: transparent;
-      padding: 0.7rem 1rem;
+      padding: 0.22rem 0.5rem;
       cursor: pointer;
       color: var(--navy);
-      font-family: inherit;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.56rem;
+      transition: 0.12s;
     }
+    .opt-btn:hover { border-color: var(--navy); }
     .opt-btn.selected { background: var(--navy); color: white; border-color: var(--navy); }
 
     .add-btn {
       width: 100%;
-      padding: 1.2rem;
+      padding: 0.55rem;
       background: var(--navy);
       color: white;
       border: none;
       font-family: 'Uncial Antiqua', serif;
-      font-size: 1.1rem;
+      font-size: 0.78rem;
       cursor: pointer;
-      margin-top: 1rem;
+      margin-top: auto;
+      transition: opacity 0.2s;
     }
-    .add-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-    .missing-msg { font-size: 0.6rem; color: var(--gris); text-align: center; margin-top: 10px; }
+    .add-btn:disabled { opacity: 0.2; cursor: not-allowed; }
+    .missing-msg {
+      font-size: 0.5rem;
+      color: var(--gris);
+      text-align: center;
+      min-height: 9px;
+    }
 
-    /* PANIER DRAWER */
+    /* DRAWER */
     .cart-drawer {
-      position: fixed; top: 0; right: 0; width: 300px; height: 100%;
-      background: white; z-index: 200; transform: translateX(100%);
-      transition: 0.3s; padding: 2rem; display: flex; flex-direction: column;
+      position: fixed; top: 0; right: 0;
+      width: 300px; height: 100%;
+      background: white; z-index: 200;
+      transform: translateX(100%);
+      transition: 0.3s;
+      padding: 2rem;
+      display: flex; flex-direction: column;
       border-left: 1px solid var(--navy);
     }
     .cart-drawer.open { transform: translateX(0); }
-    .cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; z-index: 150; }
+    .cart-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.4);
+      display: none; z-index: 150;
+    }
+    .cart-drawer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    .cart-close-btn {
+      background: none; border: none;
+      cursor: pointer; color: var(--navy);
+      font-size: 1.3rem; line-height: 1;
+      opacity: 0.5; transition: opacity 0.15s;
+    }
+    .cart-close-btn:hover { opacity: 1; }
+    .checkout-btn {
+      width: 100%; padding: 1rem;
+      background: var(--navy); color: white;
+      border: none; font-family: 'Uncial Antiqua', serif;
+      font-size: 1rem; cursor: pointer;
+    }
 
-    @media (max-width: 900px) { .shop-layout { grid-template-columns: 1fr; } }
+    @media (max-width: 650px) {
+      .product-card { grid-template-columns: 1fr; }
+      .card-config { border-left: none; border-top: 1px solid rgba(44,55,118,0.07); }
+      header { padding: 1rem 1.5rem; }
+      .product-list { padding: 0; }
+      .section-header { margin-top: 1.5rem; }
+    }
   </style>
 </head>
 <body>
@@ -149,126 +242,110 @@
   </button>
 </header>
 
-<main class="shop-layout">
-  <div class="product-gallery">
-    <div class="product-img-card" onclick="selectType('tshirt', 17, this)">
-      <img src="Group 36.png" alt="T-shirt">
-      <h3>T-Shirt — 17€</h3>
-    </div>
-    <div class="product-img-card" onclick="selectType('sweat', 33, this)">
-      <img src="Group 37.png" alt="Sweat">
-      <h3>Sweat — 33€</h3>
-    </div>
-    <div class="product-img-card" onclick="selectType('hoodie', 37, this)">
-      <img src="Group 38.png" alt="Hoodie">
-      <h3>Hoodie — 37€</h3>
-    </div>
-  </div>
-
-  <div class="config-panel">
-    <h1 class="config-title" id="displayTitle">Sélectionnez un article</h1>
-    
-    <div class="config-section">
-      <span class="config-label">Taille</span>
-      <div class="options-grid" id="sizeGrid">
-        <button class="opt-btn" onclick="selectOption('size', 'S', this)">S</button>
-        <button class="opt-btn" onclick="selectOption('size', 'M', this)">M</button>
-        <button class="opt-btn" onclick="selectOption('size', 'L', this)">L</button>
-      </div>
-    </div>
-
-    <div class="config-section">
-      <span class="config-label">Couleur</span>
-      <div class="options-grid">
-        <button class="opt-btn" onclick="selectOption('color', 'blanc', this)">Blanc</button>
-        <button class="opt-btn" onclick="selectOption('color', 'marine', this)">Marine</button>
-      </div>
-    </div>
-
-    <div class="config-section">
-      <span class="config-label">Motif</span>
-      <div class="options-grid">
-        <button class="opt-btn" onclick="selectOption('design', '1', this)">Tradiscout</button>
-        <button class="opt-btn" onclick="selectOption('design', '2', this)">Double Croix</button>
-        <button class="opt-btn" onclick="selectOption('design', '3', this)">Deus Vult</button>
-        <button class="opt-btn" onclick="selectOption('design', '4', this)">Verso l'Alto</button>
-      </div>
-    </div>
-
-    <button class="add-btn" id="addBtn" disabled onclick="addToCart()">+ Ajouter au panier</button>
-    <div class="missing-msg" id="missingMsg">Complétez vos choix</div>
-  </div>
-</main>
+<div id="shopRoot"></div>
 
 <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
 <div class="cart-drawer" id="cartDrawer">
-  <h2 style="font-family:'Uncial Antiqua'; margin-bottom:2rem">Mon Panier</h2>
+  <div class="cart-drawer-header">
+    <h2 style="font-family:'Uncial Antiqua'; font-size:1.4rem">Mon Panier</h2>
+    <button class="cart-close-btn" onclick="closeCart()">✕</button>
+  </div>
   <div id="cartItems" style="flex:1; overflow-y:auto"></div>
   <div style="border-top:1px solid #eee; padding-top:1rem">
-    <div style="display:flex; justify-content:space-between; margin-bottom:1rem; font-size:1.2rem">
+    <div style="display:flex; justify-content:space-between; margin-bottom:1rem; font-size:1.1rem">
       <span>Total</span><b id="cartTotal">0 €</b>
     </div>
-    <button class="add-btn" id="checkoutBtn" onclick="goToCheckout()">Payer →</button>
+    <button class="checkout-btn" id="checkoutBtn" onclick="goToCheckout()">Payer →</button>
   </div>
 </div>
 
 <script>
-  // ─── ÉTAT (REPRIS EXACTEMENT DE TON CODE) ───
-  const state = { type: null, size: null, color: null, design: null, price: null };
+  const TYPES = [
+    { id: 'tshirt', label: 'T-Shirt', price: 17, img: 'Group 36.png' },
+    { id: 'sweat',  label: 'Sweat',   price: 33, img: 'Group 37.png' },
+    { id: 'hoodie', label: 'Hoodie',  price: 37, img: 'Group 38.png' },
+  ];
+  const DESIGNS = [
+    { key: '1', label: 'Tradiscout' },
+    { key: '2', label: 'Double Croix' },
+    { key: '3', label: 'Deus Vult' },
+    { key: '4', label: "Verso l'Alto" },
+  ];
+  const SIZES  = ['S', 'M', 'L'];
+  const COLORS = ['Blanc', 'Marine'];
+
+  // 12 produits
+  const PRODUCTS = [];
+  TYPES.forEach(t => DESIGNS.forEach(d => {
+    PRODUCTS.push({ uid: `${t.id}-${d.key}`, type: t.id, typeLabel: t.label, price: t.price, img: t.img, design: d.key, designLabel: d.label });
+  }));
+
+  const selections = {};
+  PRODUCTS.forEach(p => { selections[p.uid] = { size: null, color: null }; });
+
+  function renderShop() {
+    const root = document.getElementById('shopRoot');
+    let html = '';
+    TYPES.forEach(t => {
+      html += `
+        <div class="section-header">
+          <h2>${t.label}</h2>
+          <span>${t.price} €</span>
+        </div>
+        <div class="product-list">
+      `;
+      PRODUCTS.filter(p => p.type === t.id).forEach(p => {
+        html += `
+          <div class="product-card">
+            <div class="card-image">
+              <img src="${p.img}" alt="${p.typeLabel} ${p.designLabel}" />
+            </div>
+            <div class="card-config">
+              <div>
+                <div class="card-header">
+                  <span class="card-name">${p.typeLabel}</span>
+                  <span class="card-price">${p.price} €</span>
+                </div>
+                <div class="card-design-tag">${p.designLabel}</div>
+              </div>
+              <div class="option-group">
+                <span class="option-label">Taille</span>
+                <div class="option-btns">
+                  ${SIZES.map(s => `<button class="opt-btn" onclick="sel('${p.uid}','size','${s}',this)">${s}</button>`).join('')}
+                </div>
+              </div>
+              <div class="option-group">
+                <span class="option-label">Couleur</span>
+                <div class="option-btns">
+                  ${COLORS.map(c => `<button class="opt-btn" onclick="sel('${p.uid}','color','${c}',this)">${c}</button>`).join('')}
+                </div>
+              </div>
+              <button class="add-btn" id="add-${p.uid}" disabled onclick="addToCart('${p.uid}')">+ Ajouter au panier</button>
+              <div class="missing-msg" id="msg-${p.uid}">Sélectionnez taille et couleur</div>
+            </div>
+          </div>
+        `;
+      });
+      html += `</div>`;
+    });
+    root.innerHTML = html;
+  }
+
+  function sel(uid, cat, val, el) {
+    selections[uid][cat] = val;
+    el.closest('.option-btns').querySelectorAll('.opt-btn').forEach(b => b.classList.remove('selected'));
+    el.classList.add('selected');
+    const ok = selections[uid].size && selections[uid].color;
+    document.getElementById('add-' + uid).disabled = !ok;
+    document.getElementById('msg-' + uid).textContent = ok ? '' : 'Sélectionnez taille et couleur';
+  }
+
   let cart = [];
 
-  const DESIGNS = {
-    '1': "«Tradiscout»",
-    '2': "«Double Croix»",
-    '3': "«Deus Vult»",
-    '4': "«Verso l'Alto»"
-  };
-  const DESIGN_SHORT = {
-    '1': 'tradiscout',
-    '2': 'Double Croix',
-    '3': 'Deus Vult',
-    '4': "Verso l'Alto"
-  };
-  const LABELS = { tshirt: 'T-Shirt', sweat: 'Sweat', hoodie: 'Hoodie' };
-
-  // ─── SÉLECTION ───
-  function selectType(type, price, el) {
-    state.type = type;
-    state.price = price;
-    document.querySelectorAll('.product-img-card').forEach(c => c.classList.remove('selected'));
-    el.classList.add('selected');
-    document.getElementById('displayTitle').innerText = LABELS[type];
-    updateCTA();
-  }
-
-  function selectOption(cat, val, el) {
-    state[cat] = val;
-    el.parentElement.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('selected'));
-    el.classList.add('selected');
-    updateCTA();
-  }
-
-  function updateCTA() {
-    const btn = document.getElementById('addBtn');
-    const msg = document.getElementById('missingMsg');
-    const ok = state.type && state.size && state.color && state.design;
-    btn.disabled = !ok;
-    msg.textContent = ok ? "" : "Sélectionnez tous les éléments";
-  }
-
-  // ─── PANIER (LOGIQUE ORIGINALE) ───
-  function addToCart() {
-    const item = {
-      id: Date.now(),
-      type: state.type,
-      size: state.size,
-      color: state.color,
-      design: state.design,
-      price: state.price,
-      label: LABELS[state.type],
-      designShort: DESIGN_SHORT[state.design]
-    };
-    cart.push(item);
+  function addToCart(uid) {
+    const p = PRODUCTS.find(x => x.uid === uid);
+    const s = selections[uid];
+    cart.push({ id: Date.now(), uid, type: p.type, label: p.typeLabel, design: p.design, designShort: p.designLabel, size: s.size, color: s.color, price: p.price });
     renderCart();
     openCart();
   }
@@ -278,55 +355,40 @@
     const total = cart.reduce((s, i) => s + i.price, 0);
     document.getElementById('cartCount').textContent = cart.length;
     document.getElementById('cartTotal').textContent = total + ' €';
-
-    if (cart.length === 0) {
-      container.innerHTML = '<p>Panier vide</p>';
-      return;
-    }
+    if (cart.length === 0) { container.innerHTML = '<p style="font-size:0.75rem;color:var(--gris)">Panier vide</p>'; return; }
     container.innerHTML = cart.map(item => `
-      <div style="margin-bottom:1rem; border-bottom:1px solid #eee; padding-bottom:10px">
-        <div style="display:flex; justify-content:space-between"><b>${item.label}</b> <span>${item.price}€</span></div>
-        <div style="font-size:0.7rem; color:gray">${item.size} / ${item.color} / ${item.designShort}</div>
+      <div style="margin-bottom:1rem;border-bottom:1px solid #eee;padding-bottom:10px">
+        <div style="display:flex;justify-content:space-between"><b>${item.label}</b><span>${item.price}€</span></div>
+        <div style="font-size:0.62rem;color:gray;margin-top:3px">${item.designShort} · ${item.size} · ${item.color}</div>
       </div>
     `).join('');
   }
 
-  function openCart() { 
+  function openCart() {
     document.getElementById('cartDrawer').classList.add('open');
     document.getElementById('cartOverlay').style.display = 'block';
   }
-  function closeCart() { 
+  function closeCart() {
     document.getElementById('cartDrawer').classList.remove('open');
     document.getElementById('cartOverlay').style.display = 'none';
   }
 
-  // ─── CHECKOUT (REPRIS EXACTEMENT DE TON CODE) ───
   async function goToCheckout() {
     if (cart.length === 0) return;
     const btn = document.getElementById('checkoutBtn');
-    btn.innerText = "Chargement...";
-    btn.disabled = true;
-
+    btn.innerText = "Chargement..."; btn.disabled = true;
     try {
-      const res = await fetch('/api/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ items: cart })
-      });
-
-      if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.error || 'Erreur serveur');
-      }
-
+      const res = await fetch('/api/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ items: cart }) });
+      if (!res.ok) { const err = await res.json(); throw new Error(err.error || 'Erreur serveur'); }
       const { url } = await res.json();
-      window.location.href = url; // C'est ici que ça redirige vraiment
+      window.location.href = url;
     } catch (e) {
       alert('Erreur : ' + e.message);
-      btn.innerText = "Payer →";
-      btn.disabled = false;
+      btn.innerText = "Payer →"; btn.disabled = false;
     }
   }
+
+  renderShop();
 </script>
 </body>
 </html>
