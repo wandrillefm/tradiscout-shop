@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verso L'Alto — Boutique</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --noir: #0e0e0e;
+      --marine: #1a2744;
+      --blanc: #f5f2eb;
+      --or: #c9a84c;
+      --or-clair: #e8d5a3;
+      --gris: #6b6b6b;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--noir);
+      color: var(--blanc);
+      font-family: 'DM Mono', monospace;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* GRAIN OVERLAY */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 100;
+      opacity: 0.4;
+    }
+
+    /* HEADER */
+    header {
+      padding: 2.5rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(201,168,76,0.2);
+      animation: fadeDown 0.8s ease both;
+    }
+
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      color: var(--or);
+      text-transform: uppercase;
+    }
+
+    .logo span {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--blanc);
+    }
+
+    .tagline {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: var(--gris);
+      text-transform: uppercase;
+    }
+
+    /* HERO */
+    .hero {
+      padding: 5rem 3rem 3rem;
+      animation: fadeUp 0.9s ease 0.2s both;
+    }
+
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 8vw, 7rem);
+      font-weight: 400;
+      line-height: 0.9;
+      color: var(--blanc);
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--or);
+    }
+
+    .hero p {
+      margin-top: 1.5rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      color: var(--gris);
+      text-transform: uppercase;
+      max-width: 400px;
+    }
+
+    /* CONFIGURATEUR */
+    .shop {
+      padding: 3rem;
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 4rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      animation: fadeUp 1s ease 0.4s both;
+    }
+
+    /* PRÉVIEW VÊTEMENT */
+    .preview-zone {
+      position: sticky;
+      top: 2rem;
+      height: fit-content;
+    }
+
+    .garment-visual {
+      aspect-ratio: 3/4;
+      border: 1px solid rgba(201,168,76,0.15);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.4s ease;
+      background: #111;
+    }
+
+    .garment-visual.blanc { background: #e8e4d9; }
+    .garment-visual.marine { background: var(--marine); }
+
+    .garment-shape {
+      width: 55%;
+      transition: all 0.3s ease;
+    }
+
+    /* SVG formes vêtements */
+    .garment-shape svg {
+      width: 100%;
+      height: auto;
+    }
+
+    .shape-fill-blanc .garment-path { fill: #f5f2eb; stroke: #ccc; }
+    .shape-fill-marine .garment-path { fill: #1a2744; stroke: #2a3a5e; }
+
+    .design-preview {
+      position: absolute;
+      bottom: 18%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60%;
+      text-align: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.6rem;
+      line-height: 1.5;
+      letter-spacing: 0.05em;
+      opacity: 0.85;
+      transition: all 0.4s ease;
+    }
+
+    .garment-visual.blanc .design-preview { color: #1a2744; }
+    .garment-visual.marine .design-preview { color: #f5f2eb; }
+
+    .garment-label {
+      position: absolute;
+      bottom: 1.2rem;
+      left: 1.2rem;
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--or);
+    }
+
+    .price-display {
+      position: absolute;
+      top: 1.2rem;
+      right: 1.2rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--or);
+    }
+
+    /* PANNEAU CONFIG */
+    .config-panel { display: flex; flex-direction: column; gap: 2.5rem; }
+
+    .config-section { display: flex; flex-direction: column; gap: 0.8rem; }
+
+    .config-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--or);
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid rgba(201,168,76,0.15);
+    }
+
+    /* OPTIONS VÊTEMENT */
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.6rem;
+    }
+
+    .opt-btn {
+      background: transparent;
+      border: 1px solid rgba(245,242,235,0.15);
+      color: var(--blanc);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.8rem 0.4rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .opt-btn:hover {
+      border-color: rgba(201,168,76,0.5);
+      color: var(--or-clair);
+    }
+
+    .opt-btn.selected {
+      border-color: var(--or);
+      background: rgba(201,168,76,0.08);
+      color: var(--or);
+    }
+
+    .opt-btn .opt-price {
+      font-size: 0.55rem;
+      color: var(--gris);
+    }
+
+    .opt-btn.selected .opt-price { color: var(--or-clair); }
+
+    /* TAILLE */
+    .sizes-row {
+      display: flex;
+      gap: 0.6rem;
+    }
+
+    .size-btn {
+      flex: 1;
+      background: transparent;
+      border: 1px solid rgba(245,242,235,0.15);
+      color: var(--blanc);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      padding: 0.7rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .size-btn:hover { border-color: rgba(201,168,76,0.5); color: var(--or-clair); }
+    .size-btn.selected { border-color: var(--or); background: rgba(201,168,76,0.08); color: var(--or); }
+
+    /* COULEUR */
+    .colors-row { display: flex; gap: 0.6rem; }
+
+    .color-btn {
+      flex: 1;
+      background: transparent;
+      border: 1px solid rgba(245,242,235,0.15);
+      color: var(--blanc);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .color-btn:hover { border-color: rgba(201,168,76,0.5); }
+    .color-btn.selected { border-color: var(--or); background: rgba(201,168,76,0.08); color: var(--or); }
+
+    .color-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .color-dot.blanc { background: #f5f2eb; border: 1px solid #ccc; }
+    .color-dot.marine { background: #1a2744; border: 1px solid #2a3a5e; }
+
+    /* DESIGNS */
+    .designs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.6rem;
+    }
+
+    .design-btn {
+      background: transparent;
+      border: 1px solid rgba(245,242,235,0.12);
+      color: var(--blanc);
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.75rem;
+      line-height: 1.5;
+      padding: 1rem 0.8rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      text-align: center;
+    }
+
+    .design-btn:hover { border-color: rgba(201,168,76,0.4); background: rgba(201,168,76,0.04); }
+    .design-btn.selected { border-color: var(--or); background: rgba(201,168,76,0.08); color: var(--or-clair); }
+
+    .design-btn .design-num {
+      display: block;
+      font-family: 'DM Mono', monospace;
+      font-style: normal;
+      font-size: 0.5rem;
+      letter-spacing: 0.2em;
+      color: var(--or);
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+    }
+
+    /* RÉSUMÉ + CTA */
+    .order-summary {
+      border: 1px solid rgba(201,168,76,0.2);
+      padding: 1.2rem;
+      background: rgba(201,168,76,0.03);
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gris);
+      padding: 0.3rem 0;
+    }
+
+    .summary-row.total {
+      color: var(--blanc);
+      border-top: 1px solid rgba(201,168,76,0.15);
+      margin-top: 0.5rem;
+      padding-top: 0.7rem;
+      font-size: 0.75rem;
+    }
+
+    .summary-row.total span:last-child {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--or);
+    }
+
+    .cta-btn {
+      width: 100%;
+      padding: 1.1rem;
+      background: var(--or);
+      color: var(--noir);
+      border: none;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      margin-top: 1rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: #fff;
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      opacity: 0.15;
+    }
+
+    .cta-btn:hover::before { transform: translateX(0); }
+    .cta-btn:hover { background: var(--or-clair); }
+
+    .cta-btn:disabled {
+      background: #333;
+      color: #666;
+      cursor: not-allowed;
+    }
+
+    .cta-btn:disabled::before { display: none; }
+
+    .cta-loading { display: none; }
+    .cta-btn.loading .cta-text { display: none; }
+    .cta-btn.loading .cta-loading { display: inline; }
+
+    .missing-msg {
+      font-size: 0.58rem;
+      color: var(--gris);
+      letter-spacing: 0.08em;
+      text-align: center;
+      margin-top: 0.5rem;
+      min-height: 1rem;
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 3rem;
+      font-size: 0.55rem;
+      letter-spacing: 0.15em;
+      color: #444;
+      text-transform: uppercase;
+      border-top: 1px solid rgba(201,168,76,0.1);
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .shop { grid-template-columns: 1fr; }
+      .preview-zone { position: static; }
+      .garment-visual { aspect-ratio: 4/3; }
+      header { padding: 1.5rem; }
+      .hero { padding: 3rem 1.5rem 2rem; }
+      .shop { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Verso <span>L'Alto</span></div>
+  <div class="tagline">Collection Tradiscout — 2026</div>
+</header>
+
+<section class="hero">
+  <h1>La <em>boutique</em><br>scout.</h1>
+  <p>Choisissez votre vêtement, votre taille, votre couleur et votre citation.</p>
+</section>
+
+<main class="shop">
+
+  <!-- PRÉVISUALISATION -->
+  <div class="preview-zone">
+    <div class="garment-visual" id="garmentVisual">
+      <div class="garment-shape" id="garmentShape">
+        <!-- SVG injecté dynamiquement -->
+      </div>
+      <div class="design-preview" id="designPreview">
+        Sélectionnez<br>un design
+      </div>
+      <div class="garment-label" id="garmentLabel">—</div>
+      <div class="price-display" id="priceDisplay">—</div>
+    </div>
+  </div>
+
+  <!-- CONFIGURATEUR -->
+  <div class="config-panel">
+
+    <!-- VÊTEMENT -->
+    <div class="config-section">
+      <div class="config-label">01 — Vêtement</div>
+      <div class="options-grid">
+        <button class="opt-btn" data-type="tshirt" data-price="17" onclick="selectOption('type', this)">
+          T-Shirt
+          <span class="opt-price">17 €</span>
+        </button>
+        <button class="opt-btn" data-type="sweat" data-price="33" onclick="selectOption('type', this)">
+          Sweat
+          <span class="opt-price">33 €</span>
+        </button>
+        <button class="opt-btn" data-type="hoodie" data-price="37" onclick="selectOption('type', this)">
+          Hoodie
+          <span class="opt-price">37 €</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- TAILLE -->
+    <div class="config-section">
+      <div class="config-label">02 — Taille</div>
+      <div class="sizes-row">
+        <button class="size-btn" onclick="selectOption('size', this)" data-size="S">S</button>
+        <button class="size-btn" onclick="selectOption('size', this)" data-size="M">M</button>
+        <button class="size-btn" onclick="selectOption('size', this)" data-size="L">L</button>
+      </div>
+    </div>
+
+    <!-- COULEUR -->
+    <div class="config-section">
+      <div class="config-label">03 — Couleur</div>
+      <div class="colors-row">
+        <button class="color-btn" onclick="selectOption('color', this)" data-color="blanc">
+          <span class="color-dot blanc"></span>
+          Blanc
+        </button>
+        <button class="color-btn" onclick="selectOption('color', this)" data-color="marine">
+          <span class="color-dot marine"></span>
+          Marine
+        </button>
+      </div>
+    </div>
+
+    <!-- DESIGN / CITATION -->
+    <div class="config-section">
+      <div class="config-label">04 — Citation</div>
+      <div class="designs-grid">
+        <button class="design-btn" onclick="selectOption('design', this)" data-design="1">
+          <span class="design-num">Design 01</span>
+          « Laisse Dieu agir,<br>et agis avec Dieu. »
+        </button>
+        <button class="design-btn" onclick="selectOption('design', this)" data-design="2">
+          <span class="design-num">Design 02</span>
+          « Toujours prêt,<br>toujours debout. »
+        </button>
+        <button class="design-btn" onclick="selectOption('design', this)" data-design="3">
+          <span class="design-num">Design 03</span>
+          « Per aspera<br>ad astra. »
+        </button>
+        <button class="design-btn" onclick="selectOption('design', this)" data-design="4">
+          <span class="design-num">Design 04</span>
+          « Verso l'Alto —<br>toujours plus haut. »
+        </button>
+      </div>
+    </div>
+
+    <!-- RÉSUMÉ COMMANDE -->
+    <div class="order-summary">
+      <div class="summary-row">
+        <span>Vêtement</span>
+        <span id="sumType">—</span>
+      </div>
+      <div class="summary-row">
+        <span>Taille</span>
+        <span id="sumSize">—</span>
+      </div>
+      <div class="summary-row">
+        <span>Couleur</span>
+        <span id="sumColor">—</span>
+      </div>
+      <div class="summary-row">
+        <span>Design</span>
+        <span id="sumDesign">—</span>
+      </div>
+      <div class="summary-row total">
+        <span>Total</span>
+        <span id="sumTotal">—</span>
+      </div>
+    </div>
+
+    <div>
+      <button class="cta-btn" id="ctaBtn" disabled onclick="goToCheckout()">
+        <span class="cta-text">Commander →</span>
+        <span class="cta-loading">Redirection...</span>
+      </button>
+      <div class="missing-msg" id="missingMsg">Complétez tous les choix pour commander</div>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  © 2026 Verso L'Alto — Tradiscout · Paiement sécurisé par Stripe
+</footer>
+
+<script>
+  // ─── ÉTAT ───────────────────────────────────────────────────────────
+  const state = { type: null, size: null, color: null, design: null, price: null };
+
+  const DESIGNS = {
+    1: "« Laisse Dieu agir,\net agis avec Dieu. »",
+    2: "« Toujours prêt,\ntoujours debout. »",
+    3: "« Per aspera\nad astra. »",
+    4: "« Verso l'Alto —\ntoujours plus haut. »"
+  };
+
+  const LABELS = { tshirt: 'T-Shirt', sweat: 'Sweat', hoodie: 'Hoodie' };
+
+  // SVG formes
+  const SVG_TSHIRT = `<svg viewBox="0 0 200 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path class="garment-path" d="M60 20 L20 60 L50 75 L50 200 L150 200 L150 75 L180 60 L140 20 L115 40 C110 50 90 50 85 40 Z" stroke-width="1.5"/>
+  </svg>`;
+
+  const SVG_SWEAT = `<svg viewBox="0 0 200 230" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path class="garment-path" d="M60 25 L15 70 L45 82 L45 210 L155 210 L155 82 L185 70 L140 25 L118 45 C113 56 87 56 82 45 Z" stroke-width="1.5"/>
+    <path class="garment-path" d="M45 210 L45 220 L65 220 L65 210" stroke-width="1"/>
+    <path class="garment-path" d="M155 210 L155 220 L135 220 L135 210" stroke-width="1"/>
+  </svg>`;
+
+  const SVG_HOODIE = `<svg viewBox="0 0 200 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path class="garment-path" d="M60 30 L15 75 L45 88 L45 215 L155 215 L155 88 L185 75 L140 30 C130 20 115 15 100 15 C85 15 70 20 60 30 Z" stroke-width="1.5"/>
+    <path class="garment-path" d="M85 30 Q100 55 115 30" stroke-width="1" fill="none"/>
+    <path class="garment-path" d="M80 215 L80 230 L120 230 L120 215" stroke-width="1"/>
+    <path class="garment-path" d="M45 215 L45 225 L65 225 L65 215" stroke-width="1"/>
+    <path class="garment-path" d="M155 215 L155 225 L135 225 L135 215" stroke-width="1"/>
+  </svg>`;
+
+  const SVGS = { tshirt: SVG_TSHIRT, sweat: SVG_SWEAT, hoodie: SVG_HOODIE };
+
+  // ─── SÉLECTION OPTIONS ───────────────────────────────────────────────
+  function selectOption(category, btn) {
+    // Deselect siblings
+    btn.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+
+    if (category === 'type') {
+      state.type = btn.dataset.type;
+      state.price = parseInt(btn.dataset.price);
+    } else if (category === 'size') {
+      state.size = btn.dataset.size;
+    } else if (category === 'color') {
+      state.color = btn.dataset.color;
+    } else if (category === 'design') {
+      state.design = btn.dataset.design;
+    }
+
+    updatePreview();
+    updateSummary();
+    updateCTA();
+  }
+
+  // ─── PREVIEW ─────────────────────────────────────────────────────────
+  function updatePreview() {
+    const visual = document.getElementById('garmentVisual');
+    const shape = document.getElementById('garmentShape');
+    const designPrev = document.getElementById('designPreview');
+    const label = document.getElementById('garmentLabel');
+    const priceDisp = document.getElementById('priceDisplay');
+
+    // Couleur
+    visual.className = 'garment-visual';
+    if (state.color) visual.classList.add(state.color);
+
+    // Forme vêtement
+    if (state.type) {
+      shape.innerHTML = SVGS[state.type];
+      const colorClass = state.color ? `shape-fill-${state.color}` : '';
+      shape.className = `garment-shape ${colorClass}`;
+      label.textContent = LABELS[state.type];
+      priceDisp.textContent = state.price + ' €';
+    } else {
+      label.textContent = '—';
+      priceDisp.textContent = '—';
+    }
+
+    // Design
+    if (state.design) {
+      designPrev.innerHTML = DESIGNS[state.design].replace('\n', '<br>');
+    } else {
+      designPrev.innerHTML = 'Sélectionnez<br>un design';
+    }
+  }
+
+  // ─── RÉSUMÉ ──────────────────────────────────────────────────────────
+  function updateSummary() {
+    document.getElementById('sumType').textContent = state.type ? LABELS[state.type] : '—';
+    document.getElementById('sumSize').textContent = state.size || '—';
+    document.getElementById('sumColor').textContent = state.color ? (state.color.charAt(0).toUpperCase() + state.color.slice(1)) : '—';
+    document.getElementById('sumDesign').textContent = state.design ? `Design 0${state.design}` : '—';
+    document.getElementById('sumTotal').textContent = state.price ? state.price + ' €' : '—';
+  }
+
+  // ─── CTA ─────────────────────────────────────────────────────────────
+  function updateCTA() {
+    const btn = document.getElementById('ctaBtn');
+    const msg = document.getElementById('missingMsg');
+    const allSelected = state.type && state.size && state.color && state.design;
+
+    btn.disabled = !allSelected;
+
+    if (allSelected) {
+      msg.textContent = '';
+    } else {
+      const missing = [];
+      if (!state.type) missing.push('vêtement');
+      if (!state.size) missing.push('taille');
+      if (!state.color) missing.push('couleur');
+      if (!state.design) missing.push('design');
+      msg.textContent = 'Manque : ' + missing.join(', ');
+    }
+  }
+
+  // ─── CHECKOUT ────────────────────────────────────────────────────────
+  async function goToCheckout() {
+    const btn = document.getElementById('ctaBtn');
+    btn.classList.add('loading');
+    btn.disabled = true;
+
+    try {
+      const res = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: state.type,
+          size: state.size,
+          color: state.color,
+          design: state.design,
+          price: state.price
+        })
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || 'Erreur serveur');
+      }
+
+      const { url } = await res.json();
+      window.location.href = url;
+
+    } catch (e) {
+      alert('Erreur : ' + e.message);
+      btn.classList.remove('loading');
+      btn.disabled = false;
+    }
+  }
+</script>
+</body>
+</html>

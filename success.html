@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Commande confirmée — Verso L'Alto</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root { --noir: #0e0e0e; --or: #c9a84c; --blanc: #f5f2eb; --gris: #6b6b6b; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--noir);
+      color: var(--blanc);
+      font-family: 'DM Mono', monospace;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 2rem;
+      padding: 2rem;
+    }
+    .check {
+      width: 60px;
+      height: 60px;
+      border: 1px solid var(--or);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: var(--or);
+      animation: pop 0.5s ease both;
+    }
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.5rem;
+      font-weight: 400;
+    }
+    h1 em { font-style: italic; color: var(--or); }
+    p { font-size: 0.7rem; letter-spacing: 0.1em; color: var(--gris); max-width: 360px; line-height: 1.8; }
+    a {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--or);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(201,168,76,0.3);
+      padding-bottom: 2px;
+    }
+    @keyframes pop {
+      from { transform: scale(0); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="check">✓</div>
+  <h1>Commande <em>confirmée</em></h1>
+  <p>Merci pour ta commande ! Tu recevras un email de confirmation Stripe avec les détails. Nous traiterons ta commande dans les meilleurs délais.</p>
+  <a href="/">← Retour à la boutique</a>
+</body>
+</html>
