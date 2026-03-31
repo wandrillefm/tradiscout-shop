@@ -26,15 +26,30 @@
       padding: 2rem;
     }
 
-    header { text-align: center; margin-bottom: 3rem; }
+    header { 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      margin-bottom: 3rem;
+      position: relative;
+    }
     h1 { font-family: 'Uncial Antiqua'; font-size: 3rem; text-transform: lowercase; }
 
-    /* ─── GRILLE PRODUITS ─── */
+    /* ─── BOUTON PANIER ─── */
+    .cart-trigger {
+      position: absolute; right: 0;
+      background: var(--navy); color: var(--bg);
+      border: none; padding: 10px 20px;
+      font-family: 'Uncial Antiqua'; cursor: pointer;
+      display: flex; gap: 10px; align-items: center;
+    }
+    .cart-count { background: var(--bg); color: var(--navy); padding: 2px 8px; border-radius: 10px; font-size: 0.8rem; }
+
+    /* ─── GRILLE PRODUITS (6 large PC / 3 large TEL) ─── */
     .product-grid {
       display: grid;
       max-width: 1400px;
       margin: 0 auto;
-      /* 6 par ligne sur PC */
       grid-template-columns: repeat(6, 1fr);
       gap: 20px;
     }
@@ -48,85 +63,67 @@
     .product-card:hover { transform: translateY(-5px); }
 
     .product-img {
-      width: 100%;
-      aspect-ratio: 1 / 1;
-      object-fit: cover;
-      border-bottom: 1px solid var(--navy);
-      display: block;
+      width: 100%; aspect-ratio: 1 / 1;
+      object-fit: cover; border-bottom: 1px solid var(--navy);
+      display: block; background: #fff; /* Pour simuler tes photos */
     }
 
     .product-info { padding: 10px; text-align: center; }
     .product-info h3 { font-family: 'Uncial Antiqua'; font-size: 0.9rem; }
     .product-info p { font-size: 0.8rem; opacity: 0.8; }
 
-    /* ─── LIGHTBOX (MODAL) ─── */
+    /* ─── LIGHTBOX ─── */
     .modal {
       position: fixed; inset: 0;
       background: rgba(10, 29, 55, 0.8);
-      display: none; /* Caché par défaut */
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      padding: 20px;
+      display: none; align-items: center; justify-content: center;
+      z-index: 1000; padding: 20px;
     }
     .modal.open { display: flex; }
 
     .modal-content {
-      background: var(--bg);
-      width: 100%;
-      max-width: 900px;
-      border: 2px solid var(--navy);
-      display: grid;
-      grid-template-columns: 1fr 1fr; /* Image à gauche, config à droite */
-      position: relative;
+      background: var(--bg); width: 100%; max-width: 900px;
+      border: 2px solid var(--navy); display: grid;
+      grid-template-columns: 1fr 1fr; position: relative;
     }
 
-    .modal-close {
-      position: absolute; top: 10px; right: 15px;
-      font-size: 2rem; cursor: pointer; z-index: 10;
-    }
+    .modal-close { position: absolute; top: 10px; right: 15px; font-size: 2rem; cursor: pointer; z-index: 10; }
 
-    .modal-image-side img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
+    .modal-image-side img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-    .modal-config-side { padding: 30px; display: flex; flex-direction: column; gap: 20px; }
+    .modal-config-side { padding: 30px; display: flex; flex-direction: column; gap: 15px; }
     .modal-config-side h2 { font-family: 'Uncial Antiqua'; }
 
-    /* ─── SELECTEURS ─── */
-    .selector-label { font-size: 0.7rem; font-weight: bold; text-transform: uppercase; margin-bottom: 5px; }
+    .selector-label { font-size: 0.7rem; font-weight: bold; text-transform: uppercase; margin-top: 10px; }
     .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
     .btn-opt {
-      padding: 8px 15px;
-      border: 1px solid var(--navy);
-      background: transparent;
-      font-family: 'Sanchez';
-      cursor: pointer;
+      padding: 6px 12px; border: 1px solid var(--navy);
+      background: transparent; font-family: 'Sanchez'; cursor: pointer; font-size: 0.8rem;
     }
     .btn-opt.active { background: var(--navy); color: var(--bg); }
 
     .add-btn {
-      margin-top: auto;
-      padding: 15px;
-      background: var(--navy);
-      color: var(--bg);
-      border: none;
-      font-family: 'Uncial Antiqua';
-      font-size: 1.1rem;
-      cursor: pointer;
+      margin-top: 20px; padding: 15px;
+      background: var(--navy); color: var(--bg);
+      border: none; font-family: 'Uncial Antiqua'; cursor: pointer;
     }
+
+    /* ─── PANIER (DRAWER) ─── */
+    .drawer {
+      position: fixed; top: 0; right: 0; width: 350px; height: 100%;
+      background: var(--bg); border-left: 2px solid var(--navy);
+      z-index: 2000; transform: translateX(100%); transition: 0.3s;
+      padding: 20px; display: flex; flex-direction: column;
+    }
+    .drawer.open { transform: translateX(0); }
+    .cart-item { border-bottom: 1px solid rgba(10,29,55,0.1); padding: 10px 0; font-size: 0.8rem; }
 
     /* ─── RESPONSIVE ─── */
-    @media (max-width: 1024px) {
-      .product-grid { grid-template-columns: repeat(3, 1fr); } /* 3 par ligne sur tel/tablette */
-    }
-
+    @media (max-width: 1024px) { .product-grid { grid-template-columns: repeat(3, 1fr); } }
     @media (max-width: 768px) {
       .modal-content { grid-template-columns: 1fr; max-height: 90vh; overflow-y: auto; }
-      .modal-image-side { aspect-ratio: 1/1; }
+      header { flex-direction: column; gap: 1rem; }
+      .cart-trigger { position: static; }
     }
   </style>
 </head>
@@ -134,37 +131,43 @@
 
 <header>
   <h1>la boutique</h1>
+  <button class="cart-trigger" onclick="toggleCart()">
+    Panier <span class="cart-count" id="cartCount">0</span>
+  </button>
 </header>
 
-<div class="product-grid" id="grid">
-  </div>
+<div class="product-grid" id="grid"></div>
 
 <div class="modal" id="modal">
   <div class="modal-content">
     <span class="modal-close" onclick="closeModal()">×</span>
     <div class="modal-image-side">
-      <img src="" id="modalImg" alt="Produit">
+      <img src="" id="modalImg">
     </div>
     <div class="modal-config-side">
-      <h2 id="modalTitle">Nom du produit</h2>
-      <p id="modalPrice" style="font-size: 1.5rem; font-family: 'Uncial Antiqua';">00 €</p>
+      <h2 id="modalTitle">Produit</h2>
+      <p id="modalPrice" style="font-family: 'Uncial Antiqua'; font-size: 1.5rem;">0 €</p>
       
-      <div>
-        <p class="selector-label">Taille</p>
-        <div class="btn-group">
-          <button class="btn-opt" onclick="select(this)">S</button>
-          <button class="btn-opt active" onclick="select(this)">M</button>
-          <button class="btn-opt" onclick="select(this)">L</button>
-          <button class="btn-opt" onclick="select(this)">XL</button>
-        </div>
+      <p class="selector-label">Taille</p>
+      <div class="btn-group" id="sizes">
+        <button class="btn-opt" onclick="select(this, 'size')">S</button>
+        <button class="btn-opt active" onclick="select(this, 'size')">M</button>
+        <button class="btn-opt" onclick="select(this, 'size')">L</button>
+        <button class="btn-opt" onclick="select(this, 'size')">XL</button>
       </div>
 
-      <div>
-        <p class="selector-label">Couleur</p>
-        <div class="btn-group">
-          <button class="btn-opt active" onclick="select(this)">Marine</button>
-          <button class="btn-opt" onclick="select(this)">Coton</button>
-        </div>
+      <p class="selector-label">Couleur</p>
+      <div class="btn-group" id="colors">
+        <button class="btn-opt active" onclick="select(this, 'color')">Marine</button>
+        <button class="btn-opt" onclick="select(this, 'color')">Coton</button>
+      </div>
+
+      <p class="selector-label">Citation</p>
+      <div class="btn-group" id="designs">
+        <button class="btn-opt active" onclick="select(this, 'design')">Design 1</button>
+        <button class="btn-opt" onclick="select(this, 'design')">Design 2</button>
+        <button class="btn-opt" onclick="select(this, 'design')">Design 3</button>
+        <button class="btn-opt" onclick="select(this, 'design')">Design 4</button>
       </div>
 
       <button class="add-btn" onclick="addToCart()">Ajouter au panier</button>
@@ -172,63 +175,91 @@
   </div>
 </div>
 
+<div class="drawer" id="cartDrawer">
+  <div style="display:flex; justify-content: space-between; align-items:center; margin-bottom: 20px;">
+    <h2 style="font-family: 'Uncial Antiqua';">Ton Panier</h2>
+    <span style="cursor:pointer" onclick="toggleCart()">✕</span>
+  </div>
+  <div id="cartContent" style="flex:1; overflow-y: auto;"></div>
+  <div style="border-top: 1px solid var(--navy); padding-top: 15px;">
+    <p style="font-family: 'Uncial Antiqua'; font-size: 1.2rem;">Total: <span id="totalPrice">0</span> €</p>
+    <button class="add-btn" style="width:100%" onclick="alert('Redirection Stripe...')">Payer</button>
+  </div>
+</div>
+
 <script>
-  // Liste de tes produits
+  const DESIGNS_TEXT = {
+    "Design 1": "Laisse Dieu agir, et agis avec Dieu.",
+    "Design 2": "Toujours prêt, toujours debout.",
+    "Design 3": "Per aspera ad astra.",
+    "Design 4": "Verso l'Alto — toujours plus haut."
+  };
+
   const products = [
-    { id: 1, name: "T-Shirt Verso L'Alto", price: 17, img: "img1.jpg" },
-    { id: 2, name: "Sweat Ad Astra", price: 33, img: "img2.jpg" },
-    { id: 3, name: "Hoodie Scout", price: 37, img: "img3.jpg" },
-    { id: 4, name: "T-Shirt Toujours Prêt", price: 17, img: "img4.jpg" },
-    { id: 5, name: "Sweat Totus Tuus", price: 33, img: "img5.jpg" },
-    { id: 6, name: "Veste de camp", price: 45, img: "img6.jpg" },
-    // Ajoute autant de produits que tu veux, la grille suivra
+    { name: "T-Shirt", price: 17, img: "tshirt.jpg" },
+    { name: "Sweat", price: 33, img: "sweat.jpg" },
+    { name: "Hoodie", price: 37, img: "hoodie.jpg" }
   ];
 
-  const grid = document.getElementById('grid');
-  const modal = document.getElementById('modal');
+  let cart = [];
+  let currentProduct = null;
 
-  // Génération de la grille
+  // Création de la grille (3 produits originaux répétés pour remplir si besoin)
+  const grid = document.getElementById('grid');
   products.forEach(p => {
     const card = document.createElement('div');
     card.className = 'product-card';
     card.onclick = () => openModal(p);
-    card.innerHTML = `
-      <img src="${p.img}" class="product-img">
-      <div class="product-info">
-        <h3>${p.name}</h3>
-        <p>${p.price} €</p>
-      </div>
-    `;
+    card.innerHTML = `<img src="${p.img}" class="product-img"><div class="product-info"><h3>${p.name}</h3><p>${p.price} €</p></div>`;
     grid.appendChild(card);
   });
 
   function openModal(p) {
+    currentProduct = p;
     document.getElementById('modalImg').src = p.img;
     document.getElementById('modalTitle').innerText = p.name;
     document.getElementById('modalPrice').innerText = p.price + " €";
-    modal.classList.add('open');
+    document.getElementById('modal').classList.add('open');
   }
 
-  function closeModal() {
-    modal.classList.remove('open');
-  }
+  function closeModal() { document.getElementById('modal').classList.remove('open'); }
 
-  function select(btn) {
-    // Désactive les autres boutons du même groupe
+  function select(btn, type) {
     btn.parentElement.querySelectorAll('.btn-opt').forEach(b => b.classList.remove('active'));
-    // Active le cliqué
     btn.classList.add('active');
   }
 
+  function toggleCart() { document.getElementById('cartDrawer').classList.toggle('open'); }
+
   function addToCart() {
-    alert("Produit ajouté !");
+    const size = document.querySelector('#sizes .active').innerText;
+    const color = document.querySelector('#colors .active').innerText;
+    const design = document.querySelector('#designs .active').innerText;
+
+    cart.push({ ...currentProduct, size, color, design });
+    updateCartUI();
     closeModal();
+    toggleCart();
   }
 
-  // Fermer la modal si on clique à côté du contenu
-  window.onclick = function(event) {
-    if (event.target == modal) closeModal();
+  function updateCartUI() {
+    document.getElementById('cartCount').innerText = cart.length;
+    const content = document.getElementById('cartContent');
+    let total = 0;
+    
+    content.innerHTML = cart.map((item, i) => {
+      total += item.price;
+      return `<div class="cart-item">
+        <strong>${item.name}</strong> - ${item.price}€<br>
+        Taille: ${item.size} | ${item.color}<br>
+        <small>${DESIGNS_TEXT[item.design]}</small>
+      </div>`;
+    }).join('');
+    
+    document.getElementById('totalPrice').innerText = total;
   }
+
+  window.onclick = (e) => { if (e.target == document.getElementById('modal')) closeModal(); }
 </script>
 
 </body>
