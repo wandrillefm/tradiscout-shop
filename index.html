@@ -451,7 +451,8 @@
     const c = COLORS.find(x => x.key === lb.color);
     cart.push({
       id: Date.now(),
-      type: lb.type, typeLabel: t.label, designLabel: d.label,
+      type: lb.type, typeLabel: t.label,
+      design: String(d.id), designLabel: d.label,
       color: lb.color, colorLabel: c.label,
       size: lb.size,
       price: t.price,
