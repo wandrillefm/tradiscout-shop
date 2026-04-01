@@ -24,7 +24,7 @@ export default async function handler(req, res) {
     if (!validTypes.includes(item.type)) return res.status(400).json({ error: 'Type invalide' });
     if (!validSizes.includes(item.size)) return res.status(400).json({ error: 'Taille invalide' });
     if (!validColors.includes(item.color)) return res.status(400).json({ error: 'Couleur invalide' });
-//    if (!validDesigns.includes(item.design)) return res.status(400).json({ error: 'Design invalide' });
+    if (!validDesigns.includes(item.design)) return res.status(400).json({ error: 'Design invalide' });
     if (validPrices[item.type] !== item.price) return res.status(400).json({ error: 'Prix invalide' });
   }
 
