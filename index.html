@@ -20,7 +20,15 @@
       font-family: 'DM Mono', monospace;
       min-height: 100vh;
     }
-
+    
+    .subtitle {
+      font-size: 0.72rem;
+      color: var(--gris);
+      letter-spacing: 0.06em;
+      text-align: center;
+      margin: 0.5rem 0;
+    }
+    
     /* ── HEADER ── */
     header {
       padding: 1.4rem 2.5rem;
@@ -237,8 +245,8 @@
     Panier <span class="cart-count" id="cartCount">0</span>
   </button>
 </header>
-<p>La livraison et la TVA sont compris dans les prix !</p>
-<p>Vous ne payez donc que les prix affichés !</p>
+<p class="subtitle">La livraison et la TVA sont compris dans les prix !</p>
+<p class="subtitle">Vous ne payez donc que les prix affichés !</p>
 <div class="grid-wrap">
   <div class="grid" id="grid"></div>
 </div>
