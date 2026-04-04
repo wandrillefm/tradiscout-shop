@@ -20,7 +20,7 @@
       font-family: 'DM Mono', monospace;
       min-height: 100vh;
     }
-    
+
     .subtitle {
       font-size: 0.72rem;
       color: var(--gris);
@@ -28,7 +28,7 @@
       text-align: center;
       margin: 0.5rem 0;
     }
-    
+
     /* ── HEADER ── */
     header {
       padding: 1.4rem 2.5rem;
@@ -59,29 +59,26 @@
     .grid-wrap { max-width: 1100px; margin: 2.5rem auto; padding: 0 2rem 4rem; }
     .grid {
       display: grid;
+      /* ← 4 colonnes pour 4 designs. Si tu ajoutes un 5e design, passe à repeat(5, 1fr) */
       grid-template-columns: repeat(4, 1fr);
       gap: 1px;
       background: rgba(44,55,118,0.1);
       border: 1px solid rgba(44,55,118,0.1);
     }
-
     .grid-card {
       background: white;
       cursor: pointer;
       overflow: hidden;
       display: flex; flex-direction: column;
       transition: box-shadow 0.2s;
-      position: relative;
     }
     .grid-card:hover { box-shadow: 0 0 0 2px var(--navy) inset; z-index: 1; }
-
     .grid-card img {
       width: 100%; aspect-ratio: 1/1;
       object-fit: cover; display: block;
       transition: transform 0.35s;
     }
     .grid-card:hover img { transform: scale(0.9); filter: blur(2px); }
-
     .grid-card-info {
       padding: 0.7rem 0.8rem 0.75rem;
       border-top: 1px solid rgba(44,55,118,0.07);
@@ -94,33 +91,23 @@
     .lb-overlay {
       position: fixed; inset: 0;
       background: rgba(20,22,40,0.65);
-      z-index: 300;
-      display: none;
-      align-items: center;
-      justify-content: center;
+      z-index: 300; display: none;
+      align-items: center; justify-content: center;
       padding: 1.5rem;
     }
     .lb-overlay.open { display: flex; }
-
     .lb-modal {
       background: var(--bg);
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      max-width: 780px;
-      width: 100%;
-      max-height: 90vh;
-      overflow: hidden;
+      display: grid; grid-template-columns: 1fr 1fr;
+      max-width: 780px; width: 100%;
+      max-height: 90vh; overflow: hidden;
       position: relative;
       animation: lbIn 0.22s ease;
     }
     @keyframes lbIn { from { opacity:0; transform: scale(0.97); } to { opacity:1; transform: scale(1); } }
-
-    /* image gauche */
     .lb-img-wrap {
-      aspect-ratio: 1/1;
-      overflow: hidden;
-      background: #e8e3d8;
-      position: relative;
+      aspect-ratio: 1/1; overflow: hidden;
+      background: #e8e3d8; position: relative;
     }
     .lb-img-wrap img {
       width: 100%; height: 100%;
@@ -128,16 +115,12 @@
       transition: opacity 0.2s, transform 0.3s, filter 0.2s;
     }
     .lb-img-wrap img.fade { opacity: 0; transform: scale(1.02); filter: blur(8px); }
-
-    /* config droite */
     .lb-config {
       padding: 2rem 1.8rem;
-      display: flex; flex-direction: column;
-      gap: 1.1rem;
+      display: flex; flex-direction: column; gap: 1.1rem;
       overflow-y: auto;
       border-left: 1px solid rgba(44,55,118,0.1);
     }
-
     .lb-close {
       position: absolute; top: 0.8rem; right: 0.9rem;
       background: none; border: none; cursor: pointer;
@@ -145,11 +128,9 @@
       transition: opacity 0.15s; z-index: 10;
     }
     .lb-close:hover { opacity: 1; }
-
     .lb-title { font-family: 'Uncial Antiqua', serif; font-size: 1.5rem; line-height: 1.1; }
     .lb-design-tag { font-size: 0.55rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gris); }
     .lb-price { font-size: 1rem; color: var(--or); }
-
     .opt-group { display: flex; flex-direction: column; gap: 0.35rem; }
     .opt-label { font-size: 0.52rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--gris); border-bottom: 1px solid rgba(44,55,118,0.08); padding-bottom: 0.25rem; }
     .opt-row { display: flex; flex-wrap: wrap; gap: 0.3rem; }
@@ -162,18 +143,16 @@
     }
     .opt-btn:hover { border-color: var(--navy); }
     .opt-btn.sel { background: var(--navy); color: white; border-color: var(--navy); }
-
     .lb-add {
       width: 100%; padding: 0.85rem;
       background: var(--navy); color: white; border: none;
       font-family: 'Uncial Antiqua', serif; font-size: 1rem;
-      cursor: pointer; margin-top: auto;
-      transition: opacity 0.2s;
+      cursor: pointer; margin-top: auto; transition: opacity 0.2s;
     }
     .lb-add:disabled { opacity: 0.22; cursor: not-allowed; }
     .lb-msg { font-size: 0.52rem; color: var(--gris); text-align: center; min-height: 10px; }
 
-    /* ── DRAWER PANIER ── */
+    /* ── DRAWER ── */
     .cart-drawer {
       position: fixed; top: 0; right: 0;
       width: 300px; height: 100%;
@@ -191,6 +170,30 @@
     .drawer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
     .drawer-close { background: none; border: none; cursor: pointer; color: var(--navy); font-size: 1.3rem; opacity: 0.45; transition: opacity 0.15s; }
     .drawer-close:hover { opacity: 1; }
+
+    /* ── CODE PROMO ── */
+    .promo-wrap { margin-bottom: 0.8rem; }
+    .promo-row { display: flex; gap: 0.4rem; }
+    .promo-input {
+      flex: 1; border: 1px solid rgba(44,55,118,0.22);
+      background: transparent; padding: 0.45rem 0.6rem;
+      font-family: 'DM Mono', monospace; font-size: 0.6rem;
+      color: var(--navy); text-transform: uppercase;
+      letter-spacing: 0.08em; outline: none; transition: border-color 0.15s;
+    }
+    .promo-input:focus { border-color: var(--navy); }
+    .promo-input::placeholder { text-transform: none; letter-spacing: 0; opacity: 0.45; }
+    .promo-apply {
+      border: 1px solid var(--navy); background: transparent;
+      color: var(--navy); padding: 0.45rem 0.7rem;
+      font-family: 'DM Mono', monospace; font-size: 0.58rem;
+      cursor: pointer; transition: 0.12s; white-space: nowrap;
+    }
+    .promo-apply:hover { background: var(--navy); color: white; }
+    .promo-msg { font-size: 0.55rem; margin-top: 0.35rem; min-height: 14px; letter-spacing: 0.04em; }
+    .promo-msg.ok  { color: #2a7a2a; }
+    .promo-msg.err { color: #b94040; }
+
     .checkout-btn {
       width: 100%; padding: 0.9rem;
       background: var(--navy); color: white; border: none;
@@ -201,35 +204,18 @@
     footer {
       border-top: 1px solid rgba(44,55,118,0.12);
       padding: 1.5rem 2.5rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.7rem;
+      display: flex; flex-direction: column; align-items: center; gap: 0.7rem;
       background: rgba(248,242,231,0.6);
     }
-    .footer-copy {
-      font-size: 0.58rem;
-      color: var(--gris);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-    .footer-links {
-      display: flex;
-      gap: 1.5rem;
-    }
+    .footer-copy { font-size: 0.58rem; color: var(--gris); letter-spacing: 0.08em; text-transform: uppercase; }
+    .footer-links { display: flex; gap: 1.5rem; }
     .footer-links a {
-      font-size: 0.58rem;
-      color: var(--navy);
-      text-decoration: none;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      opacity: 0.55;
-      transition: opacity 0.15s;
+      font-size: 0.58rem; color: var(--navy); text-decoration: none;
+      text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.55; transition: opacity 0.15s;
     }
     .footer-links a:hover { opacity: 1; }
 
-    @media (max-width: 900px) { .grid { grid-template-columns: repeat(3, 1fr); } }
-    @media (max-width: 650px) {
+    @media (max-width: 700px) {
       .grid { grid-template-columns: repeat(2, 1fr); }
       .lb-modal { grid-template-columns: 1fr; max-height: 95vh; overflow-y: auto; }
       .lb-img-wrap { aspect-ratio: 1/1; }
@@ -247,40 +233,36 @@
 </header>
 <p class="subtitle">La livraison et la TVA sont compris dans les prix !</p>
 <p class="subtitle">Vous ne payez donc que les prix affichés !</p>
+
 <div class="grid-wrap">
   <div class="grid" id="grid"></div>
 </div>
 
 <!-- LIGHTBOX -->
 <div class="lb-overlay" id="lbOverlay" onclick="lbClickOutside(event)">
-  <div class="lb-modal" id="lbModal">
+  <div class="lb-modal">
     <div class="lb-img-wrap">
       <img id="lbImg" src="" alt="" />
     </div>
     <div class="lb-config">
       <button class="lb-close" onclick="closeLb()">✕</button>
-
       <div>
         <div class="lb-title" id="lbTitle"></div>
         <div class="lb-design-tag" id="lbDesignTag"></div>
         <div class="lb-price" id="lbPrice"></div>
       </div>
-
       <div class="opt-group">
         <span class="opt-label">Type</span>
         <div class="opt-row" id="lbTypes"></div>
       </div>
-
       <div class="opt-group">
         <span class="opt-label">Couleur</span>
         <div class="opt-row" id="lbColors"></div>
       </div>
-
       <div class="opt-group">
         <span class="opt-label">Taille</span>
         <div class="opt-row" id="lbSizes"></div>
       </div>
-
       <button class="lb-add" id="lbAdd" disabled onclick="addToCart()">+ Ajouter au panier</button>
       <div class="lb-msg" id="lbMsg">Sélectionnez tous les éléments</div>
     </div>
@@ -296,8 +278,15 @@
   </div>
   <div id="cartItems" style="flex:1;overflow-y:auto"></div>
   <div style="border-top:1px solid #eee;padding-top:1rem">
-    <div style="display:flex;justify-content:space-between;margin-bottom:1rem;font-size:1.05rem">
+    <div style="display:flex;justify-content:space-between;margin-bottom:0.6rem;font-size:1.05rem">
       <span>Total</span><b id="cartTotal">0 €</b>
+    </div>
+    <div class="promo-wrap">
+      <div class="promo-row">
+        <input class="promo-input" id="promoInput" type="text" placeholder="Code promo" maxlength="20" />
+        <button class="promo-apply" onclick="applyPromo()">Appliquer</button>
+      </div>
+      <div class="promo-msg" id="promoMsg"></div>
     </div>
     <button class="checkout-btn" id="checkoutBtn" onclick="goToCheckout()">Payer →</button>
   </div>
@@ -314,136 +303,119 @@
 </footer>
 
 <script>
-  // ── CATALOGUE ──
+  // ════════════════════════════════════════════════════════════════════
+  // CATALOGUE — tout ce qu'il faut modifier est ici
+  // ════════════════════════════════════════════════════════════════════
+
+  // TYPES DE VÊTEMENTS
+  // → Pour ajouter un type : ajoute une ligne ici ET dans checkout.js
+  //   (sections validTypes, basePrices, typeLabels)
   const TYPES = [
     { id: 'tshirt', label: 'T-Shirt', price: 17 },
     { id: 'sweat',  label: 'Sweat',   price: 33 },
     { id: 'hoodie', label: 'Hoodie',  price: 37 },
   ];
+
+  // DESIGNS / MOTIFS
+  // → Pour ajouter un design : ajoute une ligne ici ET dans checkout.js
+  //   (sections validDesigns, designLabels)
+  //   + ajoute les images : sweat-bleu-TONDESIGN.png, tshirt-blanc-TONDESIGN.png, etc.
+  //   + passe grid-template-columns à repeat(5, 1fr) si tu passes à 5 designs
   const DESIGNS = [
-    { key: 'tradiscout',   label: 'Tradiscout',   id: 1 },
-    { key: 'double-croix', label: 'Double Croix', id: 2 },
-    { key: 'deus-vult',    label: 'Deus Vult',    id: 3 },
-    { key: 'verso-lalto',  label: "Verso l'Alto", id: 4 },
-  ];
-  const SIZES  = ['S', 'M', 'L'];
-  const COLORS = [
-    { key: 'blanc',  label: 'Blanc' },
-    { key: 'bleu', label: 'Marine' },
+    { key: 'tradiscout',   label: 'Tradiscout',   id: '1' },
+    { key: 'double-croix', label: 'Double Croix', id: '2' },
+    { key: 'deus-vult',    label: 'Deus Vult',    id: '3' },
+    { key: 'verso-lalto',  label: "Verso l'Alto", id: '4' },
+    // Exemple : { key: 'nouveau-motif', label: 'Nouveau Motif', id: '5' },
   ];
 
-  // image par combinaison : type-couleur-motif.png
-  // grille : image par défaut = tshirt-blanc-<motif>.png
+  // COULEURS
+  // → Pour ajouter une couleur : ajoute une ligne ici ET dans checkout.js (validColors)
+  //   + ajoute les images correspondantes
+  const COLORS = [
+    { key: 'blanc', label: 'Blanc'  },
+    { key: 'bleu',  label: 'Marine' },
+  ];
+
+  const SIZES = ['S', 'M', 'L'];
+
+  // Type et couleur affichés sur la grille (la card de présentation)
+  const GRID_DEFAULT_TYPE  = 'sweat';
+  const GRID_DEFAULT_COLOR = 'bleu';
+
+  // ════════════════════════════════════════════════════════════════════
+
   function imgSrc(type, color, design) {
     return `${type}-${color}-${design}.png`;
   }
 
-  // ── GRILLE : 4 cards par design (une par motif, type défaut = tshirt, couleur défaut = blanc) ──
-  // En fait on fait 12 cards : 4 designs × 3 types
-  // Ordre : on groupe par design pour montrer la variété
-  const PRODUCTS = [];
-  DESIGNS.forEach(d => {
-    TYPES.forEach(t => {
-      PRODUCTS.push({ uid: `${t.id}-${d.key}`, type: t.id, design: d.key, designId: d.id });
-    });
-  });
-
   function renderGrid() {
     const grid = document.getElementById('grid');
-    grid.innerHTML = PRODUCTS.map(p => {
-      const t = TYPES.find(x => x.id === p.type);
-      const d = DESIGNS.find(x => x.key === p.design);
-      const defaultImg = imgSrc(p.type, 'bleu', p.design);
-      return `
-        <div class="grid-card" onclick="openLb('${p.type}', '${p.design}')">
-          <img src="${defaultImg}" alt="${t.label} ${d.label}" onerror="this.style.background='#ddd';this.src=''" />
-          <div class="grid-card-info">
-            <div class="grid-card-name">${t.label}</div>
-            <div class="grid-card-sub">${d.label}</div>
-            <div class="grid-card-price">${t.price} €</div>
-          </div>
+    const defaultType = TYPES.find(x => x.id === GRID_DEFAULT_TYPE);
+    grid.innerHTML = DESIGNS.map(d => `
+      <div class="grid-card" onclick="openLb('${GRID_DEFAULT_TYPE}', '${d.key}')">
+        <img src="${imgSrc(GRID_DEFAULT_TYPE, GRID_DEFAULT_COLOR, d.key)}"
+             alt="${defaultType.label} ${d.label}"
+             onerror="this.style.background='#ddd';this.src=''" />
+        <div class="grid-card-info">
+          <div class="grid-card-name">${d.label}</div>
+          <div class="grid-card-sub">T-shirt · Sweat · Hoodie</div>
+          <div class="grid-card-price">à partir de ${Math.min(...TYPES.map(t => t.price))} €</div>
         </div>
-      `;
-    }).join('');
+      </div>
+    `).join('');
   }
 
-  // ── LIGHTBOX STATE ──
+  // ── LIGHTBOX ──
   const lb = { type: null, design: null, color: null, size: null };
 
   function openLb(typeId, designKey) {
-    lb.type   = typeId;
-    lb.design = designKey;
-    lb.color  = 'blanc';   // défaut blanc
-    lb.size   = null;
-
+    lb.type = typeId; lb.design = designKey;
+    lb.color = GRID_DEFAULT_COLOR; lb.size = null;
     renderLb();
     document.getElementById('lbOverlay').classList.add('open');
   }
-
-  function closeLb() {
-    document.getElementById('lbOverlay').classList.remove('open');
-  }
-
-  function lbClickOutside(e) {
-    if (e.target === document.getElementById('lbOverlay')) closeLb();
-  }
+  function closeLb() { document.getElementById('lbOverlay').classList.remove('open'); }
+  function lbClickOutside(e) { if (e.target === document.getElementById('lbOverlay')) closeLb(); }
 
   function renderLb() {
     const t = TYPES.find(x => x.id === lb.type);
     const d = DESIGNS.find(x => x.key === lb.design);
-
-    document.getElementById('lbTitle').textContent = t.label;
+    document.getElementById('lbTitle').textContent     = t.label;
     document.getElementById('lbDesignTag').textContent = d.label;
-    document.getElementById('lbPrice').textContent = t.price + ' €';
-
+    document.getElementById('lbPrice').textContent     = t.price + ' €';
     updateLbImage();
-
-    // Types
-    document.getElementById('lbTypes').innerHTML = TYPES.map(x => `
+    document.getElementById('lbTypes').innerHTML  = TYPES.map(x => `
       <button class="opt-btn ${x.id === lb.type ? 'sel' : ''}" onclick="lbSet('type','${x.id}',this)">${x.label}</button>
     `).join('');
-
-    // Couleurs
     document.getElementById('lbColors').innerHTML = COLORS.map(x => `
       <button class="opt-btn ${x.key === lb.color ? 'sel' : ''}" onclick="lbSet('color','${x.key}',this)">${x.label}</button>
     `).join('');
-
-    // Tailles
-    document.getElementById('lbSizes').innerHTML = SIZES.map(s => `
+    document.getElementById('lbSizes').innerHTML  = SIZES.map(s => `
       <button class="opt-btn ${s === lb.size ? 'sel' : ''}" onclick="lbSet('size','${s}',this)">${s}</button>
     `).join('');
-
     updateLbCTA();
   }
 
   function lbSet(cat, val, el) {
     lb[cat] = val;
-
-    // Mettre à jour les boutons du groupe
     el.closest('.opt-row').querySelectorAll('.opt-btn').forEach(b => b.classList.remove('sel'));
     el.classList.add('sel');
-
-    // Mettre à jour titre + prix si le type change
     if (cat === 'type') {
       const t = TYPES.find(x => x.id === val);
       document.getElementById('lbTitle').textContent = t.label;
       document.getElementById('lbPrice').textContent = t.price + ' €';
     }
-
     updateLbImage();
     updateLbCTA();
   }
 
   function updateLbImage() {
     const img = document.getElementById('lbImg');
-    const src = imgSrc(lb.type, lb.color || 'blanc', lb.design);
+    const src = imgSrc(lb.type, lb.color || GRID_DEFAULT_COLOR, lb.design);
     if (img.src.endsWith(src)) return;
-
     img.classList.add('fade');
-    setTimeout(() => {
-      img.src = src;
-      img.classList.remove('fade');
-    }, 180);
+    setTimeout(() => { img.src = src; img.classList.remove('fade'); }, 180);
   }
 
   function updateLbCTA() {
@@ -462,7 +434,7 @@
     cart.push({
       id: Date.now(),
       type: lb.type, typeLabel: t.label,
-      design: String(d.id), designLabel: d.label,
+      design: d.id,  designLabel: d.label,
       color: lb.color, colorLabel: c.label,
       size: lb.size,
       price: t.price,
@@ -474,16 +446,26 @@
 
   function renderCart() {
     const container = document.getElementById('cartItems');
-    const total = cart.reduce((s, i) => s + i.price, 0);
+    const discount  = promoState.discountPerItem;
+    const total     = cart.reduce((s, i) => s + (i.price - discount), 0);
     document.getElementById('cartCount').textContent = cart.length;
     document.getElementById('cartTotal').textContent = total + ' €';
-    if (!cart.length) { container.innerHTML = '<p style="font-size:0.72rem;color:var(--gris)">Panier vide</p>'; return; }
-    container.innerHTML = cart.map(item => `
-      <div style="margin-bottom:1rem;border-bottom:1px solid #eee;padding-bottom:10px">
-        <div style="display:flex;justify-content:space-between"><b>${item.typeLabel}</b><span>${item.price}€</span></div>
-        <div style="font-size:0.6rem;color:gray;margin-top:3px">${item.designLabel} · ${item.size} · ${item.colorLabel}</div>
-      </div>
-    `).join('');
+    if (!cart.length) {
+      container.innerHTML = '<p style="font-size:0.72rem;color:var(--gris)">Panier vide</p>';
+      return;
+    }
+    container.innerHTML = cart.map(item => {
+      const fp = item.price - discount;
+      const priceHtml = discount > 0
+        ? `<span style="text-decoration:line-through;color:var(--gris);font-size:0.72rem">${item.price}€</span> <span style="color:var(--or)">${fp}€</span>`
+        : `<span>${item.price}€</span>`;
+      return `
+        <div style="margin-bottom:1rem;border-bottom:1px solid #eee;padding-bottom:10px">
+          <div style="display:flex;justify-content:space-between"><b>${item.typeLabel}</b>${priceHtml}</div>
+          <div style="font-size:0.6rem;color:gray;margin-top:3px">${item.designLabel} · ${item.size} · ${item.colorLabel}</div>
+        </div>
+      `;
+    }).join('');
   }
 
   function openCart() {
@@ -495,14 +477,58 @@
     document.getElementById('cartBg').style.display = 'none';
   }
 
+  // ── CODE PROMO ──
+  const promoState = { code: null, discountPerItem: 0, validated: false };
+
+  async function applyPromo() {
+    const input = document.getElementById('promoInput');
+    const msgEl = document.getElementById('promoMsg');
+    const code  = input.value.trim().toUpperCase();
+    if (!code) { msgEl.className = 'promo-msg err'; msgEl.textContent = 'Entrez un code promo'; return; }
+    if (promoState.validated && promoState.code !== code) {
+      promoState.code = null; promoState.discountPerItem = 0; promoState.validated = false;
+    }
+    msgEl.className = 'promo-msg'; msgEl.textContent = 'Vérification...';
+    input.disabled = true;
+    try {
+      const res = await fetch('/api/validate-promo', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ promoCode: code })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        promoState.code = code; promoState.discountPerItem = data.discountPerItem; promoState.validated = true;
+        msgEl.className = 'promo-msg ok';
+        msgEl.textContent = `✓ Code appliqué — ${data.discountPerItem}€ de remise par article`;
+        renderCart();
+      } else {
+        const err = await res.json();
+        promoState.code = null; promoState.discountPerItem = 0; promoState.validated = false;
+        msgEl.className = 'promo-msg err';
+        msgEl.textContent = err.error || 'Code invalide';
+        renderCart();
+      }
+    } catch { msgEl.className = 'promo-msg err'; msgEl.textContent = 'Erreur de connexion'; }
+    input.disabled = false;
+  }
+
+  document.getElementById('promoInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') applyPromo();
+  });
+
+  // ── CHECKOUT ──
   async function goToCheckout() {
     if (!cart.length) return;
     const btn = document.getElementById('checkoutBtn');
     btn.innerText = 'Chargement...'; btn.disabled = true;
+    const discount    = promoState.discountPerItem;
+    const itemsToSend = cart.map(i => ({ ...i, price: i.price - discount }));
     try {
+      const body = { items: itemsToSend };
+      if (promoState.validated) body.promoCode = promoState.code;
       const res = await fetch('/api/checkout', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ items: cart })
+        body: JSON.stringify(body)
       });
       if (!res.ok) { const e = await res.json(); throw new Error(e.error || 'Erreur serveur'); }
       const { url } = await res.json();
@@ -513,7 +539,6 @@
     }
   }
 
-  // ── INIT ──
   renderGrid();
   renderCart();
 </script>
