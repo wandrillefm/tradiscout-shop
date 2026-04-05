@@ -77,7 +77,7 @@ export default async function handler(req, res) {
     '3': 'Deus Vult',
     '4': "Verso l'Alto",
     '5': 'Christus Rex',
-    '6': "J'ai pas scout",
+    '6': "J'peux pas j'ai scout",
     '7': 'Mode Scout',
     '8': 'Braises Surgelées',
   };
