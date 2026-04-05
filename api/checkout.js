@@ -1,6 +1,6 @@
 // api/checkout.js
 // Gère un panier avec plusieurs articles + sauvegarde dans Supabase
-// Supporte les codes promo et les prix configurables via env vars
+// Supporte les codes promo et les prix configurables via env vars Vercel
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -11,20 +11,18 @@ export default async function handler(req, res) {
 
   const { items, promoCode } = req.body;
 
-  // ── Prix de base ─────────────────────────────────────────────────────
+  // ── Prix de base ──────────────────────────────────────────────────────
   // Modifiables via env vars Vercel sans toucher au code.
-  // Semaine -2€ : PRICE_TSHIRT=15, PRICE_SWEAT=31, PRICE_HOODIE=35
-  // → Pour ajouter un type : ajoute une ligne ici + dans validTypes ci-dessous
+  // Exemple semaine -2€ : PRICE_TSHIRT=15, PRICE_SWEAT=31, PRICE_HOODIE=35
   const basePrices = {
     tshirt: parseInt(process.env.PRICE_TSHIRT  ?? '17'),
     sweat:  parseInt(process.env.PRICE_SWEAT   ?? '33'),
     hoodie: parseInt(process.env.PRICE_HOODIE  ?? '37'),
   };
 
-  // ── Codes promo ──────────────────────────────────────────────────────
+  // ── Codes promo ───────────────────────────────────────────────────────
   // Env var PROMO_CODES format : "CODE1=remise,CODE2=remise"
-  // Exemple : "ETE2025=2,SCOUT10=10"  → ETE2025 enlève 2€/article, SCOUT10 enlève 10€/article
-  // → Pour ajouter/supprimer un code : modifie juste l'env var dans Vercel et redéploie
+  // Exemple : "ETE2025=2,SCOUT10=10"
   const promoCodes = {};
   if (process.env.PROMO_CODES) {
     for (const entry of process.env.PROMO_CODES.split(',')) {
@@ -46,15 +44,12 @@ export default async function handler(req, res) {
     }
   }
 
-  // ── Validation ───────────────────────────────────────────────────────
-  // → Pour ajouter un type  : ajoute dans validTypes ET basePrices ET typeLabels
-  // → Pour ajouter un design : ajoute dans validDesigns ET designLabels
-  // → Pour ajouter une couleur : ajoute dans validColors
+  // ── Validation ────────────────────────────────────────────────────────
+  // → Pour ajouter un design : ajoute son id dans validDesigns ET son label dans designLabels
   const validTypes   = ['tshirt', 'sweat', 'hoodie'];
   const validSizes   = ['S', 'M', 'L'];
   const validColors  = ['blanc', 'bleu'];
-  const validDesigns = ['1', '2', '3', '4'];
-  // Exemple pour ajouter design 5 : validDesigns = ['1','2','3','4','5']
+  const validDesigns = ['1', '2', '3', '4', '5', '6', '7', '8'];
 
   if (!Array.isArray(items) || items.length === 0)
     return res.status(400).json({ error: 'Panier vide' });
@@ -70,9 +65,7 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: `Prix invalide pour ${item.type} (attendu: ${expectedPrice}€)` });
   }
 
-  // ── Labels ───────────────────────────────────────────────────────────
-  // → Pour ajouter un type  : ajoute dans typeLabels
-  // → Pour ajouter un design : ajoute dans designLabels
+  // ── Labels ────────────────────────────────────────────────────────────
   const typeLabels = {
     tshirt: 'T-Shirt',
     sweat:  'Sweat',
@@ -83,10 +76,13 @@ export default async function handler(req, res) {
     '2': 'Double Croix',
     '3': 'Deus Vult',
     '4': "Verso l'Alto",
-    // '5': 'Nouveau Motif',
+    '5': 'Christus Rex',
+    '6': "J'ai pas scout",
+    '7': 'Mode Scout',
+    '8': 'Braises Surgelées',
   };
 
-  // ── Construire les line_items Stripe ─────────────────────────────────
+  // ── Construire les line_items Stripe ──────────────────────────────────
   const grouped = {};
   for (const item of items) {
     const key = `${item.type}-${item.size}-${item.color}-${item.design}`;
@@ -98,7 +94,7 @@ export default async function handler(req, res) {
   Object.values(grouped).forEach((item, i) => {
     const name       = `${typeLabels[item.type]} — ${designLabels[item.design]}`;
     const promoLabel = appliedPromo ? ` [${appliedPromo} -${discountPerItem}€]` : '';
-    const desc       = `Couleur: ${item.color} | Taille: ${item.size} | Design 0${item.design}: ${designLabels[item.design]}${promoLabel}`;
+    const desc       = `Couleur: ${item.color} | Taille: ${item.size} | ${designLabels[item.design]}${promoLabel}`;
     lineItemsParams[`line_items[${i}][price_data][currency]`]                  = 'eur';
     lineItemsParams[`line_items[${i}][price_data][product_data][name]`]        = name;
     lineItemsParams[`line_items[${i}][price_data][product_data][description]`] = desc;
@@ -124,7 +120,6 @@ export default async function handler(req, res) {
         'shipping_address_collection[allowed_countries][]': 'FR',
       }).toString()
     });
-
     if (!stripeRes.ok) {
       const errData = await stripeRes.json();
       console.error('Stripe error:', errData);
@@ -148,12 +143,12 @@ export default async function handler(req, res) {
         'Prefer': 'return=minimal'
       },
       body: JSON.stringify({
-        stripe_session_id: session.id,
+        stripe_session_id:  session.id,
         articles: items.map(i => ({
           type:    i.type,
           taille:  i.size,
           couleur: i.color,
-          design:  `Design 0${i.design} — ${designLabels[i.design]}`,
+          design:  designLabels[i.design],
           prix:    i.price
         })),
         total,
