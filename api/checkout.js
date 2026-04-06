@@ -78,7 +78,7 @@ export default async function handler(req, res) {
     '4': "Verso l'Alto",
     '5': 'Christus Rex',
     '6': "J'peux pas j'ai scout",
-    '7': 'Mode Scout',
+    '7': 'Mode Grand Jeu',
     '8': 'Braises Surgelées',
   };
 
