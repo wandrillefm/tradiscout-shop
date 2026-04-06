@@ -42,14 +42,14 @@ const SIZES = ['S', 'M', 'L'];
 // → Pour ajouter un design : ajoute une ligne ici, upload les images, redéploie
 // → L'id doit aussi être ajouté dans validDesigns + designLabels dans checkout.js
 const DESIGNS = [
-  { id: '1', key: 'tradiscout',      label: 'Tradiscout'        },
-  { id: '2', key: 'double-croix',    label: 'Double Croix'      },
-  { id: '3', key: 'deus-vult',       label: 'Deus Vult'         },
-  { id: '4', key: 'verso-lalto',     label: "Verso l'Alto"      },
-  { id: '5', key: 'christus-rex',    label: 'Christus Rex'      },
-  { id: '6', key: 'jpeuxpas',        label: "J'peux pas j'ai scout" },
-  { id: '7', key: 'mode-scout',      label: 'Mode Scout'        },
-  { id: '8', key: 'braises',         label: 'Braises Surgelées' },
+  { id: '1', key: 'tradiscout',      label: 'Tradiscout'              },
+  { id: '2', key: 'double-croix',    label: 'Double Croix'            },
+  { id: '3', key: 'deus-vult',       label: 'Deus Vult'               },
+  { id: '4', key: 'verso-lalto',     label: "Verso l'Alto"            },
+  { id: '5', key: 'christus-rex',    label: 'Christus Rex'            },
+  { id: '6', key: 'jpeuxpas',        label: "J'peux pas j'ai scout"   },
+  { id: '7', key: 'mode-scout',      label: 'Mode Grand Jeu'          },
+  { id: '8', key: 'braises',         label: 'Braises Surgelées'       },
 ];
 
 // ── IMAGE PAR DÉFAUT SUR LA GRILLE ───────────────────────────────────────
