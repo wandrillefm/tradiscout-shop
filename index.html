@@ -18,26 +18,22 @@
         .main-nav a:hover, .main-nav a.active { opacity: 1; }
         .main-nav a.active::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 1px; background: var(--navy); }
 
-        /* RIDEAU */
         #shop-curtain { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 80px 20px; background: var(--bg); margin: 20px 5%; position: relative; }
         .curtain-content { max-width: 500px; border: 1px solid var(--navy); padding: 60px 40px; }
         .curtain-title { font-family: 'Uncial Antiqua', serif; font-size: 1.8rem; margin-bottom: 15px; line-height: 1.2; }
         .curtain-sub { font-size: 0.7rem; letter-spacing: 0.2em; opacity: 0.6; text-transform: uppercase; }
         
-        /* ADMIN UNLOCK FIXED */
         .admin-unlock { position: absolute; bottom: 15px; right: 15px; display: flex; align-items: center; gap: 8px; z-index: 900; }
         #adminInput { display: none; padding: 6px 10px; border: 1px solid var(--navy); background: white; font-family: 'DM Mono'; font-size: 0.65rem; outline: none; width: 110px; }
         .lock-icon { cursor: pointer; opacity: 0.2; font-size: 1rem; transition: 0.3s; user-select: none; }
         .lock-icon:hover { opacity: 1; transform: scale(1.1); }
 
-        /* BOUTIQUE CACHÉE */
         #shop-content { display: none; flex: 1; }
         .grid-wrap { max-width: 1100px; margin: 2rem auto; padding: 0 5% 6rem; }
         .grid { display: grid; gap: 1px; background: rgba(44,55,118,0.1); border: 1px solid rgba(44,55,118,0.1); }
         .grid-card { background: white; cursor: pointer; display: flex; flex-direction: column; transition: 0.2s; }
         .grid-card:hover { box-shadow: 0 0 0 2px var(--navy) inset; }
 
-        /* FOOTER UNIFORMISÉ (Strictement comme la page code) */
         footer { background: var(--navy); color: var(--bg); padding: 64px 5% 40px; margin-top: auto; }
         .footer-inner { max-width: 860px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 48px; }
         .footer-col-title { font-size: 0.52rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--or); margin-bottom: 25px; display: block; }
@@ -75,13 +71,12 @@
         <div class="curtain-sub">Boutique en cours de préparation</div>
     </div>
     <div class="admin-unlock">
-        <input type="password" id="adminInput" placeholder="Code admin" onkeypress="handleCode(event)">
+        <input type="password" id="adminInput" placeholder="Mot de passe" onkeypress="handleCode(event)">
         <span class="lock-icon" onclick="toggleAdminInput()">🔒</span>
     </div>
 </div>
 
 <div id="shop-content">
-    <!-- Contenu boutique index (6) ici -->
     <div class="grid-wrap"><div class="grid" id="grid"></div></div>
 </div>
 
@@ -123,18 +118,14 @@
 <script>
     function toggleAdminInput() {
         const input = document.getElementById('adminInput');
-        if (input.style.display === 'inline-block' || input.style.display === 'block') {
-            input.style.display = 'none';
-        } else {
-            input.style.display = 'inline-block';
-            input.focus();
-        }
+        input.style.display = (input.style.display === 'inline-block' || input.style.display === 'block') ? 'none' : 'inline-block';
+        if (input.style.display === 'inline-block') input.focus();
     }
 
     function handleCode(e) {
         if (e.key === 'Enter') {
             const val = document.getElementById('adminInput').value;
-            if (val === 'TRADI2026') {
+            if (val === 'wandrille') {
                 unlockShop();
             } else {
                 alert('Code erroné');
@@ -146,11 +137,11 @@
     function unlockShop() {
         document.getElementById('shop-curtain').style.display = 'none';
         document.getElementById('shop-content').style.display = 'block';
-        localStorage.setItem('shop_unlocked', 'true');
+        sessionStorage.setItem('shop_unlocked', 'true');
     }
 
     window.onload = function() {
-        if (localStorage.getItem('shop_unlocked') === 'true') {
+        if (sessionStorage.getItem('shop_unlocked') === 'true') {
             unlockShop();
         }
     }
