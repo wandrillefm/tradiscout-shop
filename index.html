@@ -174,15 +174,17 @@
         .footer-bottom span { font-size: 0.5rem; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.35; }
 
         @media (max-width: 768px) {
-            header { justify-content: center; padding: 0; }
-            .main-nav { display: none; }
-            .footer-inner { grid-template-columns: 1fr; gap: 36px; }
+            header { justify-content: center; } .main-nav { display: none; }
             .tab-bar { display: flex; position: fixed; bottom: 0; left: 0; width: 100%; background: var(--bg); border-top: 1px solid rgba(44,55,118,0.13); z-index: 1000; padding-bottom: env(safe-area-inset-bottom, 0px); }
-            .tab-bar-btn { flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px 0; text-decoration: none; color: var(--navy); opacity: 0.3; transition: 0.2s; }
+            .tab-bar-btn { flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px 0; text-decoration: none; color: var(--navy); opacity: 0.3; }
             .tab-bar-btn.active { opacity: 1; }
             .tab-bar-btn span { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: lowercase; }
             footer { padding-bottom: calc(100px + env(safe-area-inset-bottom, 0px)); }
-        }
+            .grid { grid-template-columns: repeat(2, 1fr) !important; }
+            .lb-modal { grid-template-columns: 1fr; max-height: 95vh; overflow-y: auto; }
+            .lb-img-wrap { aspect-ratio: 1/1; }
+            .lb-config { border-left: none; border-top: 1px solid rgba(44,55,118,0.1); padding: 1.2rem; }
+            .footer-inner { grid-template-columns: 1fr; gap: 36px; }
     </style>
 </head>
 <body>
