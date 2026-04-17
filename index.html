@@ -9,9 +9,30 @@
     <style>
         :root { --navy: #2C3776; --bg: #F8F2E7; --or: #c9a84c; --gris: #6b6b6b; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--bg); color: var(--navy); font-family: 'DM Mono', monospace; min-height: 100vh; display: flex; flex-direction: column; }
-
-        header { position: sticky; top: 0; z-index: 1000; background: rgba(248, 242, 231, 0.96); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(44,55,118,0.12); display: flex; align-items: center; justify-content: space-between; padding: 0 5%; height: 64px; }
+body { 
+    background: var(--bg); 
+    color: var(--navy); 
+    font-family: 'DM Mono', monospace; 
+    min-height: 100vh; 
+    display: flex; 
+    flex-direction: column; 
+    padding-top: 64px; /* Add this: matches header height */
+}
+header { 
+    position: fixed; /* Changed from sticky to fixed */
+    top: 0; 
+    left: 0; 
+    right: 0; 
+    z-index: 1000; 
+    background: rgba(248, 242, 231, 0.96); 
+    backdrop-filter: blur(8px); 
+    border-bottom: 1px solid rgba(44,55,118,0.12); 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    padding: 0 5%; 
+    height: 64px; 
+}
         .logo { font-family: 'Uncial Antiqua', serif; text-transform: uppercase; letter-spacing: 2px; font-size: 1.6rem; color: var(--navy); text-decoration: none; }
         .main-nav { display: flex; gap: 32px; align-items: center; }
         .main-nav a { text-decoration: none; color: var(--navy); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: lowercase; opacity: 0.4; transition: 0.2s; position: relative; padding-bottom: 3px; }
@@ -141,11 +162,21 @@
         .lb-msg { font-size: 0.52rem; color: var(--gris); text-align: center; min-height: 10px; }
 
         /* DRAWER */
-        .cart-drawer {
-            position: fixed; top: 0; right: 0; width: 300px; height: 100%;
-            background: white; z-index: 400; transform: translateX(100%); transition: 0.28s;
-            padding: 2rem; display: flex; flex-direction: column; border-left: 1px solid var(--navy);
-        }
+.cart-drawer { 
+    position: fixed; 
+    top: 64px; /* Start below the header */
+    right: 0; 
+    width: 320px; 
+    height: calc(100% - 64px); /* Fill remaining height exactly */
+    background: white; 
+    z-index: 2100; 
+    transform: translateX(100%); 
+    transition: 0.3s; 
+    padding: 2rem; 
+    display: flex; 
+    flex-direction: column; 
+    border-left: 1px solid var(--navy); 
+}
         .cart-drawer.open { transform: translateX(0); }
         .cart-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.35); display: none; z-index: 350; }
         .drawer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
@@ -203,6 +234,10 @@
             .lb-img-wrap { aspect-ratio: 1/1; }
             .lb-config { border-left: none; border-top: 1px solid rgba(44,55,118,0.1); padding: 1.2rem; }
             .footer-inner { grid-template-columns: 1fr; gap: 36px; }
+            .cart-drawer { 
+                width: 100%; /* Optional: make cart full width on mobile */
+                padding-bottom: 100px; /* Add this: pushes the "Payer" button above the tab-bar */
+            }
     </style>
 </head>
 <body>
