@@ -17,6 +17,16 @@
         .main-nav a { text-decoration: none; color: var(--navy); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: lowercase; opacity: 0.4; transition: 0.2s; position: relative; padding-bottom: 3px; }
         .main-nav a:hover, .main-nav a.active { opacity: 1; }
         .main-nav a.active::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 1px; background: var(--navy); }
+        .cart-btn {
+            background: var(--navy); border: none; color: var(--bg);
+            padding: 0.55rem 1.1rem; cursor: pointer;
+            display: flex; align-items: center; gap: 0.5rem;
+            font-family: 'DM Mono', monospace; font-size: 0.68rem;
+        }
+        .cart-count {
+            background: var(--or); color: white; border-radius: 50%;
+            width: 17px; height: 17px; display: flex; align-items: center; justify-content: center; font-size: 0.58rem;
+        }
 
         #shop-curtain { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 80px 20px; background: var(--bg); margin: 20px 5%; position: relative; }
         .curtain-content { max-width: 500px; border: 1px solid var(--navy); padding: 60px 40px; }
@@ -29,10 +39,108 @@
         .lock-icon:hover { opacity: 1; transform: scale(1.1); }
 
         #shop-content { display: none; flex: 1; }
+        .subtitle { font-size: 0.72rem; color: var(--gris); letter-spacing: 0.06em; text-align: center; margin: 0.5rem 0; }
         .grid-wrap { max-width: 1100px; margin: 2rem auto; padding: 0 5% 6rem; }
         .grid { display: grid; gap: 1px; background: rgba(44,55,118,0.1); border: 1px solid rgba(44,55,118,0.1); }
-        .grid-card { background: white; cursor: pointer; display: flex; flex-direction: column; transition: 0.2s; }
-        .grid-card:hover { box-shadow: 0 0 0 2px var(--navy) inset; }
+        .grid-card { background: white; cursor: pointer; overflow: hidden; display: flex; flex-direction: column; transition: box-shadow 0.2s; }
+        .grid-card:hover { box-shadow: 0 0 0 2px var(--navy) inset; z-index: 1; }
+        .grid-card-img-wrap { width: 100%; aspect-ratio: 1/1; overflow: hidden; position: relative; }
+        .grid-card-img-wrap img {
+            width: 100%; height: 100%; object-fit: cover; display: block;
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            transition: transform 0.35s, filter 0.2s;
+        }
+        .grid-card:hover .grid-card-img-wrap img {
+            transform: translate(-50%, -50%) scale(0.9); filter: blur(2px);
+        }
+        .grid-card-info { padding: 0.7rem 0.8rem 0.75rem; border-top: 1px solid rgba(44,55,118,0.07); }
+        .grid-card-name { font-family: 'Uncial Antiqua', serif; font-size: 0.75rem; }
+        .grid-card-sub { font-size: 0.52rem; color: var(--gris); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.08em; }
+        .grid-card-price { font-size: 0.68rem; color: var(--or); margin-top: 4px; }
+
+        /* LIGHTBOX */
+        .lb-overlay {
+            position: fixed; inset: 0; background: rgba(20,22,40,0.65);
+            z-index: 300; display: none; align-items: center; justify-content: center; padding: 1.5rem;
+        }
+        .lb-overlay.open { display: flex; }
+        .lb-modal {
+            background: var(--bg); display: grid; grid-template-columns: 1fr 1fr;
+            max-width: 780px; width: 100%; max-height: 90vh; overflow: hidden;
+            position: relative; animation: lbIn 0.22s ease;
+        }
+        @keyframes lbIn { from { opacity:0; transform: scale(0.97); } to { opacity:1; transform: scale(1); } }
+        .lb-img-wrap { aspect-ratio: 1/1; overflow: hidden; background: #e8e3d8; }
+        .lb-img-wrap img {
+            width: 100%; height: 100%; object-fit: cover; display: block;
+            transition: opacity 0.2s, transform 0.3s, filter 0.2s;
+        }
+        .lb-img-wrap img.fade { opacity: 0; transform: scale(1.02); filter: blur(8px); }
+        .lb-config {
+            padding: 2rem 1.8rem; display: flex; flex-direction: column; gap: 1.1rem;
+            overflow-y: auto; border-left: 1px solid rgba(44,55,118,0.1);
+        }
+        .lb-close {
+            position: absolute; top: 0.8rem; right: 0.9rem;
+            background: none; border: none; cursor: pointer;
+            color: var(--navy); font-size: 1.2rem; opacity: 0.45; transition: opacity 0.15s; z-index: 10;
+        }
+        .lb-close:hover { opacity: 1; }
+        .lb-title { font-family: 'Uncial Antiqua', serif; font-size: 1.5rem; line-height: 1.1; }
+        .lb-design-tag { font-size: 0.55rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gris); }
+        .lb-price { font-size: 1rem; color: var(--or); }
+        .opt-group { display: flex; flex-direction: column; gap: 0.35rem; }
+        .opt-label { font-size: 0.52rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--gris); border-bottom: 1px solid rgba(44,55,118,0.08); padding-bottom: 0.25rem; }
+        .opt-row { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+        .opt-btn {
+            border: 1px solid rgba(44,55,118,0.22); background: transparent; padding: 0.3rem 0.7rem;
+            cursor: pointer; color: var(--navy); font-family: 'DM Mono', monospace; font-size: 0.6rem; transition: 0.12s;
+        }
+        .opt-btn:hover { border-color: var(--navy); }
+        .opt-btn.sel { background: var(--navy); color: white; border-color: var(--navy); }
+        .lb-add {
+            width: 100%; padding: 0.85rem; background: var(--navy); color: white; border: none;
+            font-family: 'Uncial Antiqua', serif; font-size: 1rem; cursor: pointer; margin-top: auto; transition: opacity 0.2s;
+        }
+        .lb-add:disabled { opacity: 0.22; cursor: not-allowed; }
+        .lb-msg { font-size: 0.52rem; color: var(--gris); text-align: center; min-height: 10px; }
+
+        /* DRAWER */
+        .cart-drawer {
+            position: fixed; top: 0; right: 0; width: 300px; height: 100%;
+            background: white; z-index: 400; transform: translateX(100%); transition: 0.28s;
+            padding: 2rem; display: flex; flex-direction: column; border-left: 1px solid var(--navy);
+        }
+        .cart-drawer.open { transform: translateX(0); }
+        .cart-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.35); display: none; z-index: 350; }
+        .drawer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+        .drawer-close { background: none; border: none; cursor: pointer; color: var(--navy); font-size: 1.3rem; opacity: 0.45; transition: opacity 0.15s; }
+        .drawer-close:hover { opacity: 1; }
+
+        /* CODE PROMO */
+        .promo-wrap { margin-bottom: 0.8rem; }
+        .promo-row { display: flex; gap: 0.4rem; }
+        .promo-input {
+            flex: 1; border: 1px solid rgba(44,55,118,0.22); background: transparent;
+            padding: 0.45rem 0.6rem; font-family: 'DM Mono', monospace; font-size: 0.6rem;
+            color: var(--navy); text-transform: uppercase; letter-spacing: 0.08em; outline: none; transition: border-color 0.15s;
+        }
+        .promo-input:focus { border-color: var(--navy); }
+        .promo-input::placeholder { text-transform: none; letter-spacing: 0; opacity: 0.45; }
+        .promo-apply {
+            border: 1px solid var(--navy); background: transparent; color: var(--navy);
+            padding: 0.45rem 0.7rem; font-family: 'DM Mono', monospace; font-size: 0.58rem;
+            cursor: pointer; transition: 0.12s; white-space: nowrap;
+        }
+        .promo-apply:hover { background: var(--navy); color: white; }
+        .promo-msg { font-size: 0.55rem; margin-top: 0.35rem; min-height: 14px; letter-spacing: 0.04em; }
+        .promo-msg.ok  { color: #2a7a2a; }
+        .promo-msg.err { color: #b94040; }
+        .checkout-btn {
+            width: 100%; padding: 0.9rem; background: var(--navy); color: white; border: none;
+            font-family: 'Uncial Antiqua', serif; font-size: 0.95rem; cursor: pointer;
+        }
 
         footer { background: var(--navy); color: var(--bg); padding: 64px 5% 40px; margin-top: auto; }
         .footer-inner { max-width: 860px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 48px; }
@@ -55,6 +163,10 @@
             .tab-bar-btn.active { opacity: 1; }
             .tab-bar-btn span { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: lowercase; }
             footer { padding-bottom: calc(100px + env(safe-area-inset-bottom, 0px)); }
+            .grid { grid-template-columns: repeat(2, 1fr) !important; }
+            .lb-modal { grid-template-columns: 1fr; max-height: 95vh; overflow-y: auto; }
+            .lb-img-wrap { aspect-ratio: 1/1; }
+            .lb-config { border-left: none; border-top: 1px solid rgba(44,55,118,0.1); padding: 1.2rem; }
         }
     </style>
 </head>
@@ -63,6 +175,9 @@
 <header>
     <a class="logo" href="https://tradiscout.com">Tradiscout</a>
     <nav class="main-nav"><a href="https://tradiscout.com">accueil</a><a href="/" class="active">boutique</a><a href="https://code.tradiscout.com">code</a></nav>
+    <button class="cart-btn" onclick="openCart()" style="display:none" id="cartBtnHeader">
+        Panier <span class="cart-count" id="cartCount">0</span>
+    </button>
 </header>
 
 <div id="shop-curtain">
@@ -77,7 +192,58 @@
 </div>
 
 <div id="shop-content">
-    <div class="grid-wrap"><div class="grid" id="grid"></div></div>
+    <p class="subtitle"></p>
+    <p class="subtitle">La livraison et la TVA sont compris dans les prix,</p>
+    <p class="subtitle">Vous ne payez donc que les prix affichés !</p>
+    <p class="subtitle"></p>
+    <p class="subtitle">Pour plus d'informations consultez les pdf en bas de la page.</p>
+
+    <div class="grid-wrap">
+        <div class="grid" id="grid"></div>
+    </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lb-overlay" id="lbOverlay" onclick="lbClickOutside(event)">
+    <div class="lb-modal">
+        <div class="lb-img-wrap"><img id="lbImg" src="" alt="" /></div>
+        <div class="lb-config">
+            <button class="lb-close" onclick="closeLb()">✕</button>
+            <div>
+                <div class="lb-title" id="lbTitle"></div>
+                <div class="lb-design-tag" id="lbDesignTag"></div>
+                <div class="lb-price" id="lbPrice"></div>
+            </div>
+            <div class="opt-group"><span class="opt-label">Type</span><div class="opt-row" id="lbTypes"></div></div>
+            <div class="opt-group"><span class="opt-label">Couleur</span><div class="opt-row" id="lbColors"></div></div>
+            <div class="opt-group"><span class="opt-label">Taille</span><div class="opt-row" id="lbSizes"></div></div>
+            <button class="lb-add" id="lbAdd" disabled onclick="addToCart()">+ Ajouter au panier</button>
+            <div class="lb-msg" id="lbMsg">Sélectionnez tous les éléments</div>
+        </div>
+    </div>
+</div>
+
+<!-- DRAWER -->
+<div class="cart-bg" id="cartBg" onclick="closeCart()"></div>
+<div class="cart-drawer" id="cartDrawer">
+    <div class="drawer-header">
+        <h2 style="font-family:'Uncial Antiqua';font-size:1.4rem">Mon Panier</h2>
+        <button class="drawer-close" onclick="closeCart()">✕</button>
+    </div>
+    <div id="cartItems" style="flex:1;overflow-y:auto"></div>
+    <div style="border-top:1px solid #eee;padding-top:1rem">
+        <div style="display:flex;justify-content:space-between;margin-bottom:0.6rem;font-size:1.05rem">
+            <span>Total</span><b id="cartTotal">0 €</b>
+        </div>
+        <div class="promo-wrap">
+            <div class="promo-row">
+                <input class="promo-input" id="promoInput" type="text" placeholder="Code promo" maxlength="20" />
+                <button class="promo-apply" onclick="applyPromo()">Appliquer</button>
+            </div>
+            <div class="promo-msg" id="promoMsg"></div>
+        </div>
+        <button class="checkout-btn" id="checkoutBtn" onclick="goToCheckout()">Payer →</button>
+    </div>
 </div>
 
 <footer>
@@ -104,6 +270,10 @@
             <span class="footer-col-title">Contact</span>
             <p class="footer-contact-text">Une suggestion, une photo, ou rejoindre l'équipe ?</p>
             <a href="mailto:tradiscout@gmail.com" class="footer-email">tradiscout@gmail.com</a>
+            <br><br>
+            <a href="Rapport Technique et Commercial.pdf" target="_blank" class="footer-email" style="font-size:0.55rem;opacity:0.7">Détails</a> &nbsp;
+            <a href="Politiques Commceriales et Clauses de Vente.pdf" target="_blank" class="footer-email" style="font-size:0.55rem;opacity:0.7">Livraison</a> &nbsp;
+            <a href="Protection des Données et conformité RGPD.pdf" target="_blank" class="footer-email" style="font-size:0.55rem;opacity:0.7">Termes</a>
         </div>
     </div>
     <div class="footer-bottom"><span>© 2026 Tradiscout</span><span>Verso l'Alto!</span></div>
@@ -116,6 +286,7 @@
 </nav>
 
 <script>
+    // ── ADMIN / CURTAIN ──
     function toggleAdminInput() {
         const input = document.getElementById('adminInput');
         input.style.display = (input.style.display === 'inline-block' || input.style.display === 'block') ? 'none' : 'inline-block';
@@ -137,7 +308,10 @@
     function unlockShop() {
         document.getElementById('shop-curtain').style.display = 'none';
         document.getElementById('shop-content').style.display = 'block';
+        document.getElementById('cartBtnHeader').style.display = 'flex';
         sessionStorage.setItem('shop_unlocked', 'true');
+        renderGrid();
+        renderCart();
     }
 
     window.onload = function() {
@@ -147,5 +321,190 @@
     }
 </script>
 
+<!-- catalogue.js doit être chargé AVANT ce script -->
+<script src="catalogue.js"></script>
+<script>
+    // ── GRILLE ──
+    function renderGrid() {
+        const grid = document.getElementById('grid');
+        const minPrice = Math.min(...TYPES.map(t => t.price));
+        // Adapte le nombre de colonnes au nombre de designs (max 4 sur desktop)
+        const cols = Math.min(DESIGNS.length, 4);
+        grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+
+        grid.innerHTML = DESIGNS.map(d => `
+            <div class="grid-card" onclick="openLb('${GRID_DEFAULT_TYPE}', '${d.key}')">
+                <div class="grid-card-img-wrap">
+                    <img src="${imgSrc(GRID_DEFAULT_TYPE, GRID_DEFAULT_COLOR, d.key)}"
+                         alt="${d.label}"
+                         onerror="this.style.opacity='0'" />
+                </div>
+                <div class="grid-card-info">
+                    <div class="grid-card-name">${d.label}</div>
+                    <div class="grid-card-sub">T-shirt · Sweat · Hoodie</div>
+                    <div class="grid-card-price">à partir de ${minPrice} €</div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // ── LIGHTBOX ──
+    const lb = { type: null, design: null, color: null, size: null };
+
+    function openLb(typeId, designKey) {
+        lb.type = typeId; lb.design = designKey;
+        lb.color = GRID_DEFAULT_COLOR; lb.size = null;
+        renderLb();
+        document.getElementById('lbOverlay').classList.add('open');
+    }
+    function closeLb() { document.getElementById('lbOverlay').classList.remove('open'); }
+    function lbClickOutside(e) { if (e.target === document.getElementById('lbOverlay')) closeLb(); }
+
+    function renderLb() {
+        const t = TYPES.find(x => x.id === lb.type);
+        const d = DESIGNS.find(x => x.key === lb.design);
+        document.getElementById('lbTitle').textContent     = t.label;
+        document.getElementById('lbDesignTag').textContent = d.label;
+        document.getElementById('lbPrice').textContent     = t.price + ' €';
+        updateLbImage();
+        document.getElementById('lbTypes').innerHTML  = TYPES.map(x => `
+            <button class="opt-btn ${x.id === lb.type ? 'sel' : ''}" onclick="lbSet('type','${x.id}',this)">${x.label}</button>
+        `).join('');
+        document.getElementById('lbColors').innerHTML = COLORS.map(x => `
+            <button class="opt-btn ${x.id === lb.color ? 'sel' : ''}" onclick="lbSet('color','${x.id}',this)">${x.label}</button>
+        `).join('');
+        document.getElementById('lbSizes').innerHTML  = SIZES.map(s => `
+            <button class="opt-btn ${s === lb.size ? 'sel' : ''}" onclick="lbSet('size','${s}',this)">${s}</button>
+        `).join('');
+        updateLbCTA();
+    }
+
+    function lbSet(cat, val, el) {
+        lb[cat] = val;
+        el.closest('.opt-row').querySelectorAll('.opt-btn').forEach(b => b.classList.remove('sel'));
+        el.classList.add('sel');
+        if (cat === 'type') {
+            const t = TYPES.find(x => x.id === val);
+            document.getElementById('lbTitle').textContent = t.label;
+            document.getElementById('lbPrice').textContent = t.price + ' €';
+        }
+        updateLbImage();
+        updateLbCTA();
+    }
+
+    function updateLbImage() {
+        const img = document.getElementById('lbImg');
+        const src = imgSrc(lb.type, lb.color || GRID_DEFAULT_COLOR, lb.design);
+        if (img.src.endsWith(src)) return;
+        img.classList.add('fade');
+        setTimeout(() => { img.src = src; img.classList.remove('fade'); }, 180);
+    }
+
+    function updateLbCTA() {
+        const ok = lb.type && lb.color && lb.size;
+        document.getElementById('lbAdd').disabled = !ok;
+        document.getElementById('lbMsg').textContent = ok ? '' : 'Sélectionnez tous les éléments';
+    }
+
+    // ── PANIER ──
+    let cart = [];
+
+    function addToCart() {
+        const t = TYPES.find(x => x.id === lb.type);
+        const d = DESIGNS.find(x => x.key === lb.design);
+        const c = COLORS.find(x => x.id === lb.color);
+        cart.push({
+            id: Date.now(),
+            type: lb.type,   typeLabel: t.label,
+            design: d.id,    designLabel: d.label,
+            color: lb.color, colorLabel: c.label,
+            size: lb.size,   price: t.price,
+        });
+        renderCart(); closeLb(); openCart();
+    }
+
+    function renderCart() {
+        const container = document.getElementById('cartItems');
+        const discount  = promoState.discountPerItem;
+        const total     = cart.reduce((s, i) => s + (i.price - discount), 0);
+        document.getElementById('cartCount').textContent = cart.length;
+        document.getElementById('cartTotal').textContent = total + ' €';
+        if (!cart.length) { container.innerHTML = '<p style="font-size:0.72rem;color:var(--gris)">Panier vide</p>'; return; }
+        container.innerHTML = cart.map(item => {
+            const fp = item.price - discount;
+            const priceHtml = discount > 0
+                ? `<span style="text-decoration:line-through;color:var(--gris);font-size:0.72rem">${item.price}€</span> <span style="color:var(--or)">${fp}€</span>`
+                : `<span>${item.price}€</span>`;
+            return `
+                <div style="margin-bottom:1rem;border-bottom:1px solid #eee;padding-bottom:10px">
+                    <div style="display:flex;justify-content:space-between"><b>${item.typeLabel}</b>${priceHtml}</div>
+                    <div style="font-size:0.6rem;color:gray;margin-top:3px">${item.designLabel} · ${item.size} · ${item.colorLabel}</div>
+                </div>`;
+        }).join('');
+    }
+
+    function openCart() { document.getElementById('cartDrawer').classList.add('open'); document.getElementById('cartBg').style.display = 'block'; }
+    function closeCart() { document.getElementById('cartDrawer').classList.remove('open'); document.getElementById('cartBg').style.display = 'none'; }
+
+    // ── CODE PROMO ──
+    const promoState = { code: null, discountPerItem: 0, validated: false };
+
+    async function applyPromo() {
+        const input = document.getElementById('promoInput');
+        const msgEl = document.getElementById('promoMsg');
+        const code  = input.value.trim().toUpperCase();
+        if (!code) { msgEl.className = 'promo-msg err'; msgEl.textContent = 'Entrez un code promo'; return; }
+        if (promoState.validated && promoState.code !== code) {
+            promoState.code = null; promoState.discountPerItem = 0; promoState.validated = false;
+        }
+        msgEl.className = 'promo-msg'; msgEl.textContent = 'Vérification...';
+        input.disabled = true;
+        try {
+            const res = await fetch('/api/validate-promo', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ promoCode: code })
+            });
+            if (res.ok) {
+                const data = await res.json();
+                promoState.code = code; promoState.discountPerItem = data.discountPerItem; promoState.validated = true;
+                msgEl.className = 'promo-msg ok';
+                msgEl.textContent = `✓ Code appliqué — ${data.discountPerItem}€ de remise par article`;
+                renderCart();
+            } else {
+                const err = await res.json();
+                promoState.code = null; promoState.discountPerItem = 0; promoState.validated = false;
+                msgEl.className = 'promo-msg err';
+                msgEl.textContent = err.error || 'Code invalide';
+                renderCart();
+            }
+        } catch { msgEl.className = 'promo-msg err'; msgEl.textContent = 'Erreur de connexion'; }
+        input.disabled = false;
+    }
+
+    document.getElementById('promoInput').addEventListener('keydown', e => { if (e.key === 'Enter') applyPromo(); });
+
+    // ── CHECKOUT ──
+    async function goToCheckout() {
+        if (!cart.length) return;
+        const btn = document.getElementById('checkoutBtn');
+        btn.innerText = 'Chargement...'; btn.disabled = true;
+        const discount    = promoState.discountPerItem;
+        const itemsToSend = cart.map(i => ({ ...i, price: i.price - discount }));
+        try {
+            const body = { items: itemsToSend };
+            if (promoState.validated) body.promoCode = promoState.code;
+            const res = await fetch('/api/checkout', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+            if (!res.ok) { const e = await res.json(); throw new Error(e.error || 'Erreur serveur'); }
+            const { url } = await res.json();
+            window.location.href = url;
+        } catch (e) {
+            alert('Erreur : ' + e.message);
+            btn.innerText = 'Payer →'; btn.disabled = false;
+        }
+    }
+</script>
 </body>
 </html>
