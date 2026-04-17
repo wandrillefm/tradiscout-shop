@@ -244,26 +244,181 @@
 
 <script src="catalogue.js"></script>
 <script>
-    // RIDEAU
+    // ==========================================
+    // 1. LOGIQUE DU RIDEAU (ACCÈS ADMIN)
+    // ==========================================
     function toggleAdminInput() {
         const input = document.getElementById('adminInput');
         input.style.display = (input.style.display === 'block') ? 'none' : 'block';
         if(input.style.display === 'block') input.focus();
     }
+
     function handleCode(e) {
         if (e.key === 'Enter') {
-            if (document.getElementById('adminInput').value === 'wandrille') unlockShop();
-            else alert('Code erroné');
+            if (document.getElementById('adminInput').value === 'wandrille') {
+                unlockShop();
+            } else {
+                alert('Code erroné');
+            }
         }
     }
+
     function unlockShop() {
         document.getElementById('shop-curtain').style.display = 'none';
         document.getElementById('shop-content').style.display = 'block';
         localStorage.setItem('shop_unlocked', 'true');
-        if(typeof renderGrid === 'function') renderGrid();
+        renderGrid(); // On affiche les produits dès que c'est débloqué
     }
 
-   
+    window.onload = () => {
+        if(localStorage.getItem('shop_unlocked') === 'true') unlockShop();
+    };
+
+    // ==========================================
+    // 2. LOGIQUE BOUTIQUE (S'appuie sur catalogue.js)
+    // ==========================================
+    const lb = { type: null, design: null, color: null, size: null };
+    let cart = [];
+    const promoState = { code: null, discountPerItem: 0, validated: false };
+
+    // Affiche la grille de produits
+    function renderGrid() {
+        const grid = document.getElementById('grid');
+        if(!grid) return;
+        
+        const minPrice = Math.min(...TYPES.map(t => t.price));
+        grid.style.gridTemplateColumns = `repeat(${Math.min(DESIGNS.length, 4)}, 1fr)`;
+        
+        grid.innerHTML = DESIGNS.map(d => `
+            <div class="grid-card" onclick="openLb('${GRID_DEFAULT_TYPE}', '${d.key}')">
+                <div class="grid-card-img-wrap"><img src="${imgSrc(GRID_DEFAULT_TYPE, GRID_DEFAULT_COLOR, d.key)}"></div>
+                <div class="grid-card-info">
+                    <div class="grid-card-name">${d.label}</div>
+                    <div class="grid-card-price">à partir de ${minPrice} €</div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // Ouvre la fenêtre de configuration produit
+    function openLb(typeKey, designKey) {
+        lb.type = typeKey;
+        lb.design = designKey;
+        lb.color = GRID_DEFAULT_COLOR;
+        lb.size = null;
+
+        const design = DESIGNS.find(d => d.key === designKey);
+        const type = TYPES.find(t => t.key === typeKey);
+        
+        document.getElementById('lbTitle').innerText = design.label;
+        document.getElementById('lbDesignTag').innerText = `Design: ${design.label}`;
+        document.getElementById('lbPrice').innerText = `${type.price} €`;
+        document.getElementById('lbImg').src = imgSrc(typeKey, lb.color, designKey);
+
+        renderLbOptions();
+        document.getElementById('lbOverlay').classList.add('open');
+    }
+
+    function setLbType(k) { lb.type = k; renderLbOptions(); }
+    function setLbColor(k) { lb.color = k; renderLbOptions(); }
+    function setLbSize(k) { lb.size = k; renderLbOptions(); }
+
+    function renderLbOptions() {
+        document.getElementById('lbTypes').innerHTML = TYPES.map(t => `<button class="opt-btn ${t.key===lb.type?'sel':''}" onclick="setLbType('${t.key}')">${t.label}</button>`).join('');
+        document.getElementById('lbColors').innerHTML = COLORS.map(c => `<button class="opt-btn ${c.key===lb.color?'sel':''}" onclick="setLbColor('${c.key}')">${c.label}</button>`).join('');
+        document.getElementById('lbSizes').innerHTML = SIZES.map(s => `<button class="opt-btn ${s.key===lb.size?'sel':''}" onclick="setLbSize('${s.key}')">${s.label}</button>`).join('');
+        
+        const type = TYPES.find(t => t.key === lb.type);
+        document.getElementById('lbPrice').innerText = `${type.price} €`;
+        document.getElementById('lbImg').src = imgSrc(lb.type, lb.color, lb.design);
+        
+        document.getElementById('lbAdd').disabled = !lb.size;
+    }
+
+    function closeLb() { document.getElementById('lbOverlay').classList.remove('open'); }
+    function lbClickOutside(e) { if(e.target.id === 'lbOverlay') closeLb(); }
+
+    // ==========================================
+    // 3. LOGIQUE PANIER
+    // ==========================================
+    function addToCart() {
+        const type = TYPES.find(t => t.key === lb.type);
+        const design = DESIGNS.find(d => d.key === lb.design);
+        const color = COLORS.find(c => c.key === lb.color);
+        const size = SIZES.find(s => s.key === lb.size);
+
+        const item = {
+            id: Date.now(),
+            type: type.label,
+            design: design.label,
+            color: color.label,
+            size: size.label,
+            price: type.price,
+            img: imgSrc(lb.type, lb.color, lb.design)
+        };
+
+        cart.push(item);
+        updateCart();
+        closeLb();
+    }
+
+    function updateCart() {
+        const container = document.getElementById('cartItems');
+        const countEl = document.getElementById('cartCount');
+        const totalEl = document.getElementById('cartTotal');
+
+        countEl.innerText = cart.length;
+        container.innerHTML = cart.map(item => `
+            <div style="display:flex; gap:10px; margin-bottom:15px; align-items:center; font-size:0.6rem; border-bottom:1px solid #eee; padding-bottom:10px;">
+                <img src="${item.img}" style="width:40px; height:40px; object-fit:cover;">
+                <div style="flex:1;">
+                    <b>${item.design}</b><br>${item.type} - ${item.color} - ${item.size}
+                </div>
+                <div style="text-align:right;">
+                    ${item.price} €<br>
+                    <span style="color:red; cursor:pointer;" onclick="removeItem(${item.id})">✕</span>
+                </div>
+            </div>
+        `).join('');
+
+        let total = cart.reduce((sum, item) => sum + item.price, 0);
+        if(promoState.validated) total -= (cart.length * promoState.discountPerItem);
+        totalEl.innerText = `${Math.max(0, total)} €`;
+    }
+
+    function removeItem(id) {
+        cart = cart.filter(i => i.id !== id);
+        updateCart();
+    }
+
+    function openCart() { 
+        document.getElementById('cartDrawer').classList.add('open'); 
+        document.getElementById('cartBg').style.display = 'block';
+    }
+    function closeCart() { 
+        document.getElementById('cartDrawer').classList.remove('open'); 
+        document.getElementById('cartBg').style.display = 'none';
+    }
+
+    function applyPromo() {
+        const code = document.getElementById('promoInput').value.toUpperCase();
+        const msg = document.getElementById('promoMsg');
+        if(code === 'WELCOME') {
+            promoState.discountPerItem = 2;
+            promoState.validated = true;
+            msg.innerText = "Code appliqué : -2€ par article";
+            msg.style.color = "green";
+        } else {
+            msg.innerText = "Code invalide";
+            msg.style.color = "red";
+        }
+        updateCart();
+    }
+
+    function goToCheckout() {
+        if(cart.length === 0) return alert("Panier vide");
+        alert("Redirection vers le paiement...");
+    }
 </script>
 </body>
 </html>
