@@ -11,7 +11,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: var(--bg); color: var(--navy); font-family: 'DM Mono', monospace; min-height: 100vh; display: flex; flex-direction: column; }
 
-        header { position: sticky; top: 0; z-index: 1000; background: rgba(248, 242, 231, 0.96); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(44,55,118,0.12); display: flex; align-items: center; justify-content: space-between; padding: 0 5%; height: 64px; }
+        header { position: sticky; top: 0; z-index: 1000; background: rgba(248, 242, 231, 0.96); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(44,55,118,0.12); flex: 1; display: flex; align-items: center; justify-content: space-between; padding: 0 5%; height: 64px; }
         .logo { font-family: 'Uncial Antiqua', serif; text-transform: uppercase; letter-spacing: 2px; font-size: 1.6rem; color: var(--navy); text-decoration: none; }
         .main-nav { display: flex; gap: 32px; align-items: center; }
         .main-nav a { text-decoration: none; color: var(--navy); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: lowercase; opacity: 0.4; transition: 0.2s; position: relative; padding-bottom: 3px; }
@@ -50,7 +50,7 @@
             max-width: 500px; 
             border: 1px solid var(--navy); 
             /* Increased top/bottom padding from 60px to 80px */
-            padding: 80px 40px; 
+            padding: 120px 40px; 
         }
         .curtain-title { font-family: 'Uncial Antiqua', serif; font-size: 1.8rem; margin-bottom: 15px; line-height: 1.2; }
         .curtain-sub { font-size: 0.7rem; letter-spacing: 0.2em; opacity: 0.6; text-transform: uppercase; }
