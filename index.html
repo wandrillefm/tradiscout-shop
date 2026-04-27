@@ -583,25 +583,24 @@
         }
 
         /* ──────────────────────────────── CART BUTTON ────────────────────────────────── */
-        .cart-btn-fixed {
-            position: fixed;
-            bottom: calc(60px + env(safe-area-inset-bottom, 0px));
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 900;
-            background: var(--navy);
+        .cart-btn-nav {
+            background: none;
             border: none;
-            color: var(--bg);
-            padding: 0.6rem 1.4rem;
             cursor: pointer;
+            color: var(--navy);
+            font-family: 'DM Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            text-transform: lowercase;
+            opacity: 0.4;
+            transition: 0.2s;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            font-family: 'DM Mono', monospace;
-            font-size: 0.68rem;
-            box-shadow: 0 4px 16px rgba(44,55,118,0.25);
-            white-space: nowrap;
+            gap: 6px;
+            padding: 0;
         }
+        .cart-btn-nav:hover { opacity: 1; }
+
 
         .cart-count {
             background: var(--or);
@@ -918,11 +917,20 @@
                 padding-bottom: 100px;
             }
             
-            .cart-btn-fixed {
-                bottom: 20px;
-                left: 20px;
-                transform: none;
-            }
+            .cart-btn-nav {
+                    position: fixed;
+                    bottom: calc(60px + env(safe-area-inset-bottom, 0px));
+                    left: 50%;
+                    transform: translateX(-50%);
+                    z-index: 1001;
+                    background: var(--navy);
+                    color: var(--bg);
+                    opacity: 1;
+                    padding: 0.6rem 1.4rem;
+                    font-size: 0.68rem;
+                    box-shadow: 0 4px 16px rgba(44,55,118,0.25);
+                    white-space: nowrap;
+                }
         }
         .hero-eyebrow { color: var(--or); }
         .hero-title { color: var(--bg); }
@@ -937,11 +945,15 @@
 <body>
     <header>
         <a class="logo" href="https://tradiscout.com">Tradiscout</a>
-        <nav class="main-nav">
-            <a href="https://tradiscout.com">accueil</a>
-            <a href="/" class="active">boutique</a>
-            <a href="https://code.tradiscout.com">code</a>
-        </nav>
+            <nav class="main-nav">
+                <a href="https://tradiscout.com">accueil</a>
+                <a href="/" class="active">boutique</a>
+                <a href="https://code.tradiscout.com">code</a>
+                <span style="width:1px;height:16px;background:rgba(44,55,118,0.2);display:inline-block;"></span>
+                <button class="cart-btn-nav" onclick="openCart()" id="cartBtnFixed" style="display:none">
+                    panier <span class="cart-count" id="cartCount">0</span>
+                </button>
+            </nav>
     </header>
 
     <!-- BOUTON PANIER FIXE BAS GAUCHE -->
