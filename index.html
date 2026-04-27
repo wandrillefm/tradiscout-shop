@@ -101,12 +101,18 @@
             padding: 80px 5% 60px;
             position: relative;
             overflow: hidden;
+            background: url('backround.png') center center / cover no-repeat; /* ← ajoute ça */
         }
         .hero::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: radial-gradient(ellipse 70% 60% at 50% 40%, rgba(201,168,76,0.08) 0%, transparent 70%);
+            background: linear-gradient(
+                to bottom,
+                rgba(44,55,118,0.55) 0%,
+                rgba(20,25,60,0.7) 60%,
+                rgba(44,55,118,0.85) 100%
+            );
             pointer-events: none;
         }
         .hero-eyebrow {
@@ -918,6 +924,13 @@
                 transform: none;
             }
         }
+        .hero-eyebrow { color: var(--or); }
+        .hero-title { color: var(--bg); }
+        .hero-sub { color: rgba(248,242,231,0.75); }
+        .hero-cta { border-color: var(--bg); color: var(--bg); }
+        .hero-cta:hover { background: var(--bg); color: var(--navy); }
+        .hero-scroll { color: rgba(248,242,231,0.5); }
+        .hero-scroll::after { background: rgba(248,242,231,0.4); }
     </style>
 </head>
 
