@@ -947,12 +947,15 @@
         <a class="logo" href="https://tradiscout.com">Tradiscout</a>
             <nav class="main-nav">
                 <a href="https://tradiscout.com">accueil</a>
-                <button class="tab-bar-btn" onclick="openCart()" id="cartBtnFixed" style="display:none">
-                    <span>panier <span id="cartCount">0</span></span>
-                </button>
+                <a href="/" class="active">boutique</a>
                 <a href="https://code.tradiscout.com">code</a>
+                <span style="width:1px;height:16px;background:rgba(44,55,118,0.2);display:inline-block;"></span>
             </nav>
     </header>
+    
+    <button class="cart-btn-nav" onclick="openCart()" id="cartBtnFixed" style="display:none">
+        panier <span class="cart-count" id="cartCount">0</span>
+    </button>
     
     <div id="shop-curtain">
         <div class="curtain-content">
@@ -1070,9 +1073,7 @@
 
     <nav class="tab-bar">
         <a href="https://tradiscout.com" class="tab-bar-btn"><span>accueil</span></a>
-        <button class="tab-bar-btn" onclick="openCart()" id="cartBtnFixed" style="display:none">
-            <span>panier <span id="cartCount">0</span></span>
-        </button>
+        <a href="/" class="tab-bar-btn active"><span>boutique</span></a>
         <a href="https://code.tradiscout.com" class="tab-bar-btn"><span>code</span></a>
     </nav>
 
