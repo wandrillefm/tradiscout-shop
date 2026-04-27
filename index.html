@@ -1073,7 +1073,9 @@
 
     <nav class="tab-bar">
         <a href="https://tradiscout.com" class="tab-bar-btn"><span>accueil</span></a>
-        <a href="/" class="tab-bar-btn active"><span>boutique</span></a>
+        <button class="tab-bar-btn" onclick="openCart()" id="cartBtnFixed" style="display:none">
+            <span>panier <span id="cartCount">0</span></span>
+        </button>
         <a href="https://code.tradiscout.com" class="tab-bar-btn"><span>code</span></a>
     </nav>
 
