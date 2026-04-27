@@ -31,6 +31,33 @@
             flex-direction: column;
         }
 
+
+.cart-btn-mobile {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .cart-btn-mobile {
+        display: flex !important;
+        position: fixed;
+        bottom: calc(60px + env(safe-area-inset-bottom, 0px));
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1001;
+        background: var(--navy);
+        color: var(--bg);
+        opacity: 1;
+        padding: 0.6rem 1.4rem;
+        font-size: 0.68rem;
+        box-shadow: 0 4px 16px rgba(44,55,118,0.25);
+        white-space: nowrap;
+    }
+}
+
+
+
+
+        
         /* ──────────────────────────────── HEADER ────────────────────────────────── */
         header {
             position: fixed;
@@ -1105,6 +1132,7 @@
             document.getElementById('shop-curtain').style.display = 'none';
             document.getElementById('shop-content').style.display = 'block';
             document.getElementById('cartBtnFixed').style.display = 'flex';
+            document.getElementById('cartBtnDesktop').style.display = 'flex';
             sessionStorage.setItem('shop_unlocked', 'true');
             renderGrid();
             renderCart();
@@ -1223,6 +1251,7 @@
             const total     = cart.reduce((s, i) => s + (i.price - discount), 0);
             document.getElementById('cartCount').textContent = cart.length;
             document.getElementById('cartTotal').textContent = total + ' €';
+            document.getElementById('cartCountDesktop').textContent = cart.length;
             if (!cart.length) { container.innerHTML = '<p style="font-size:0.72rem;color:var(--gris)">Panier vide</p>'; return; }
             container.innerHTML = cart.map(item => {
                 const fp = item.price - discount;
