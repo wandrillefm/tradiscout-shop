@@ -233,7 +233,9 @@
 
         .grid-card-info { padding: 0.7rem 0.8rem 0.75rem; border-top: 1px solid rgba(44, 55, 118, 0.07); }
         .grid-card-name { font-family: 'Uncial Antiqua', serif; font-size: 0.75rem; }
-        .grid-card-price { font-size: 0.68rem; color: var(--or); margin-top: 4px; }
+        .grid-card-desc { font-size: 0.58rem; color: var(--gris); margin-top: 5px; line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .grid-card-price { font-size: 0.68rem; color: var(--or); margin-top: 6px; }
+        .lb-desc { font-size: 0.62rem; color: var(--gris); line-height: 1.65; white-space: pre-line; margin-top: 4px; }
 
         /* ──────────────────────────────── LIGHTBOX ────────────────────────────────── */
         .lb-overlay { position: fixed; inset: 0; background: rgba(20, 22, 40, 0.65); z-index: 300; display: none; align-items: center; justify-content: center; padding: 1.5rem; }
@@ -368,6 +370,7 @@
                 <div>
                     <div class="lb-title" id="lbTitle"></div>
                     <div class="lb-design-tag" id="lbDesignTag"></div>
+                    <div class="lb-desc" id="lbDesc"></div>
                     <div class="lb-price" id="lbPrice"></div>
                 </div>
                 <div class="opt-group"><span class="opt-label">Type</span><div class="opt-row" id="lbTypes"></div></div>
@@ -474,15 +477,18 @@
             const grid = document.getElementById('grid');
             const minPrice = Math.min(...TYPES.map(t => t.price));
             grid.style.gridTemplateColumns = `repeat(${Math.min(DESIGNS.length, 4)}, 1fr)`;
-            grid.innerHTML = DESIGNS.map(d => `
+            grid.innerHTML = DESIGNS.map(d => {
+                const descLine = d.description ? d.description.replace(/\n/g, ' ') : '';
+                return `
                 <div class="grid-card" onclick="openLb('${GRID_DEFAULT_TYPE}', '${d.key}')">
                     <div class="grid-card-img-wrap"><img src="images/${imgSrc(GRID_DEFAULT_TYPE, GRID_DEFAULT_COLOR, d.key)}" onerror="this.style.opacity='0'" /></div>
                     <div class="grid-card-info">
                         <div class="grid-card-name">${d.label}</div>
+                        ${descLine ? `<div class="grid-card-desc">${descLine}</div>` : ''}
                         <div class="grid-card-price">à partir de ${minPrice} €</div>
                     </div>
-                </div>
-            `).join('');
+                </div>`;
+            }).join('');
         }
 
         // ── LIGHTBOX ──
