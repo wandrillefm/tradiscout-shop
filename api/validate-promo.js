@@ -13,13 +13,13 @@ export default async function handler(req, res) {
   if (!promoCode) return res.status(400).json({ error: 'Code manquant' });
 
   // Même source de vérité que checkout.js — env var PROMO_CODES
-  // Format : "ETE2025=2,SCOUT10=10"
+  // Format : "ETE2025=0.10,SCOUT10=0.15" pour % de réduction
   // → Pour ajouter/modifier/supprimer un code : modifie l'env var dans Vercel et redéploie
   const promoCodes = {};
   if (process.env.PROMO_CODES) {
     for (const entry of process.env.PROMO_CODES.split(',')) {
       const [code, discount] = entry.trim().split('=');
-      if (code && discount) promoCodes[code.toUpperCase()] = parseInt(discount);
+      if (code && discount) promoCodes[code.toUpperCase()] = parseFloat(discount);
     }
   }
 
@@ -27,5 +27,5 @@ export default async function handler(req, res) {
   if (promoCodes[code] === undefined)
     return res.status(400).json({ error: 'Code promo invalide' });
 
-  return res.status(200).json({ valid: true, code, discountPerItem: promoCodes[code] });
+  return res.status(200).json({ valid: true, code, discountPercent: promoCodes[code] });
 }
