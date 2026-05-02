@@ -13,21 +13,22 @@ export default async function handler(req, res) {
     TYPES.map(t => [t.id, parseInt(process.env[`PRICE_${t.id.toUpperCase()}`] ?? t.price)])
   );
 
+  // Format : "TRASCO=0.2,SCOUT10=0.1"  (fraction, 0.2 = 20%)
   const promoCodes = {};
   if (process.env.PROMO_CODES) {
     for (const entry of process.env.PROMO_CODES.split(',')) {
       const [code, discount] = entry.trim().split('=');
-      if (code && discount) promoCodes[code.toUpperCase()] = parseInt(discount);
+      if (code && discount) promoCodes[code.toUpperCase()] = parseFloat(discount);
     }
   }
 
-  let discountPerItem = 0;
+  let discountPercent = 0;
   let appliedPromo    = null;
 
   if (promoCode) {
     const code = promoCode.trim().toUpperCase();
     if (promoCodes[code] !== undefined) {
-      discountPerItem = promoCodes[code];
+      discountPercent = promoCodes[code];
       appliedPromo    = code;
     } else {
       return res.status(400).json({ error: 'Code promo invalide' });
@@ -39,11 +40,11 @@ export default async function handler(req, res) {
 
   for (const item of items) {
     const design = DESIGNS.find(d => d.id === item.design);
-    if (!design)                            return res.status(400).json({ error: 'Design invalide' });
-    if (!design.types.includes(item.type))  return res.status(400).json({ error: 'Type non disponible pour ce design' });
-    if (!design.colors.includes(item.color))return res.status(400).json({ error: 'Couleur non disponible pour ce design' });
-    if (!SIZES.includes(item.size))         return res.status(400).json({ error: 'Taille invalide' });
-    const expectedPrice = basePrices[item.type] - discountPerItem;
+    if (!design)                              return res.status(400).json({ error: 'Design invalide' });
+    if (!design.types.includes(item.type))   return res.status(400).json({ error: 'Type non disponible pour ce design' });
+    if (!design.colors.includes(item.color)) return res.status(400).json({ error: 'Couleur non disponible pour ce design' });
+    if (!SIZES.includes(item.size))          return res.status(400).json({ error: 'Taille invalide' });
+    const expectedPrice = Math.round(basePrices[item.type] * (1 - discountPercent));
     if (item.price !== expectedPrice)
       return res.status(400).json({ error: `Prix invalide pour ${item.type} (attendu: ${expectedPrice}€)` });
   }
@@ -51,6 +52,7 @@ export default async function handler(req, res) {
   const typeLabels   = Object.fromEntries(TYPES.map(t => [t.id, t.label]));
   const designLabels = Object.fromEntries(DESIGNS.map(d => [d.id, d.label]));
 
+  // Grouper les articles identiques
   const grouped = {};
   for (const item of items) {
     const key = `${item.type}-${item.size}-${item.color}-${item.design}`;
@@ -58,11 +60,11 @@ export default async function handler(req, res) {
     grouped[key].qty++;
   }
 
+  const promoLabel = appliedPromo ? ` [${appliedPromo} −${Math.round(discountPercent * 100)}%]` : '';
   const lineItemsParams = {};
   Object.values(grouped).forEach((item, i) => {
-    const name       = `${typeLabels[item.type]} — ${designLabels[item.design]}`;
-    const promoLabel = appliedPromo ? ` [${appliedPromo} -${discountPerItem}€]` : '';
-    const desc       = `Couleur: ${item.color} | Taille: ${item.size} | ${designLabels[item.design]}${promoLabel}`;
+    const name = `${typeLabels[item.type]} — ${designLabels[item.design]}`;
+    const desc = `Couleur: ${item.color} | Taille: ${item.size}${promoLabel}`;
     lineItemsParams[`line_items[${i}][price_data][currency]`]                  = 'eur';
     lineItemsParams[`line_items[${i}][price_data][product_data][name]`]        = name;
     lineItemsParams[`line_items[${i}][price_data][product_data][description]`] = desc;
@@ -99,7 +101,8 @@ export default async function handler(req, res) {
   }
 
   try {
-    const total = items.reduce((s, i) => s + i.price, 0);
+    const totalFull     = items.reduce((s, i) => s + Math.round(i.price / (1 - discountPercent)), 0);
+    const totalFacturé  = items.reduce((s, i) => s + i.price, 0);
     const supabaseRes = await fetch(`${process.env.SUPABASE_URL}/rest/v1/commandes`, {
       method: 'POST',
       headers: {
@@ -109,19 +112,19 @@ export default async function handler(req, res) {
         'Prefer': 'return=minimal'
       },
       body: JSON.stringify({
-        stripe_session_id:  session.id,
+        stripe_session_id:   session.id,
         articles: items.map(i => ({
           type:    i.type,
           taille:  i.size,
           couleur: i.color,
           design:  designLabels[i.design],
-          prix:    i.price
+          prix:    i.price,
         })),
-        total,
-        nb_articles:        items.length,
-        statut:             'en_attente',
-        code_promo:         appliedPromo ?? null,
-        remise_par_article: discountPerItem > 0 ? discountPerItem : null,
+        total:               totalFacturé,
+        nb_articles:         items.length,
+        statut:              'en_attente',
+        code_promo:          appliedPromo ?? null,
+        remise_pourcentage:  discountPercent > 0 ? discountPercent : null,
       })
     });
     if (!supabaseRes.ok) console.error('Supabase error:', await supabaseRes.text());
@@ -131,6 +134,6 @@ export default async function handler(req, res) {
 
   return res.status(200).json({
     url: session.url,
-    promoApplied: appliedPromo ? { code: appliedPromo, discountPerItem } : null
+    promoApplied: appliedPromo ? { code: appliedPromo, discountPercent } : null
   });
 }
