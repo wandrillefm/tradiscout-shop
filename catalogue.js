@@ -38,7 +38,7 @@ const DESIGNS = [
   {
     id: '1', key: 'tradiscout', label: 'Tradiscout',
     description: 'Rien de plus basique',
-    types:  ['tshirt'],
+    types:  ['tshirt','sweat','hoodie'],
     colors: ['blanc', 'bleu'],
     images: ['1-1-tradiscout.png', '1-2-tradiscout.png'],
     collection: 'scouts',
@@ -46,7 +46,7 @@ const DESIGNS = [
   {
     id: '2', key: 'double-croix', label: 'Double Croix',
     description: 'Variante',
-    types:  ['tshirt', 'sweat'],
+    types:  ['tshirt', 'sweat','hoodie'],
     colors: ['blanc', 'bleu'],
     images: ['1-1-double-croix.png', '1-2-double-croix.png', '2-1-double-croix.png'],
     collection: 'scouts',
@@ -54,7 +54,7 @@ const DESIGNS = [
   {
     id: '3', key: 'deus-vult', label: 'Deus Vult',
     description: 'Comme au temps des templiers',
-    types:  ['tshirt', 'sweat', 'hoodie'],
+    types:  ['tshirt', 'sweat'],
     colors: ['blanc', 'bleu'],
     images: ['1-1-deus-vult.png', '1-2-deus-vult.png', '2-2-deus-vult.png'],
     collection: 'scouts',
@@ -62,7 +62,7 @@ const DESIGNS = [
   {
     id: '4', key: 'verso-lalto', label: 'Verso l\'Alto',
     description: 'Devise de Saint Pier Georgio Frassati',
-    types:  ['tshirt', 'sweat', 'hoodie'],
+    types:  ['tshirt', 'sweat'],
     colors: ['blanc', 'bleu'],
     images: ['1-1-verso-lalto.png', '2-1-verso-lalto.png'],
     collection: 'scouts',
@@ -78,7 +78,7 @@ const DESIGNS = [
   {
     id: '6', key: 'braises', label: 'Braises Surgelées',
     description: 'Le saint graal',
-    types:  ['tshirt', 'sweat', 'hoodie'],
+    types:  ['tshirt','sweat','hoodie'],
     colors: ['blanc', 'bleu'],
     images: ['1-1-braises.png', '2-1-braises.png'],
     collection: 'humour',
@@ -86,7 +86,7 @@ const DESIGNS = [
   {
     id: '7', key: 'christus-rex', label: 'Christus Rex',
     description: 'Mexique.',
-    types:  ['tshirt', 'sweat', 'hoodie'],
+    types:  ['tshirt','sweat','hoodie'],
     colors: ['blanc', 'bleu'],
     images: ['1-1-christus-rex.png', '1-2-christus-rex.png'],
     collection: 'saints',
@@ -94,7 +94,7 @@ const DESIGNS = [
   {
     id: '8', key: 'st-michel', label: 'St Michel',
     description: 'Le goat',
-    types:  ['tshirt', 'sweat', 'hoodie'],
+    types:  ['tshirt','sweat','hoodie'],
     colors: ['blanc', 'bleu'],
     images: ['1-1-st-michel.png', '2-2-st-michel.png'],
     collection: 'saints',
@@ -102,7 +102,7 @@ const DESIGNS = [
   {
     id: '9', key: 'st-jean-marie-vianney', label: 'St Jean-Marie Vianney',
     description: 'En esprit de sainteté',
-    types:  ['sweat', 'hoodie'],
+    types:  ['tshirt','sweat','hoodie'],
     colors: ['blanc', 'bleu'],
     images: ['2-1-st-jean-marie-vianney.png', '3-2-st-jean-marie-vianney.png'],
     collection: 'saints',
