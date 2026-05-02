@@ -1,6 +1,4 @@
 // api/validate-promo.js
-// Vérifie un code promo sans créer de session Stripe
-
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -11,13 +9,12 @@ export default async function handler(req, res) {
   const { promoCode } = req.body;
   if (!promoCode) return res.status(400).json({ error: 'Code manquant' });
 
-  // Même source de vérité que checkout.js — env var PROMO_CODES
-  // Format : "ETE2025=5,SCOUT10=3"  (valeur = euros de remise par article)
+  // Format env var : "TRASCO=0.2,SCOUT10=0.1"  (valeur = fraction, ex. 0.2 = 20%)
   const promoCodes = {};
   if (process.env.PROMO_CODES) {
     for (const entry of process.env.PROMO_CODES.split(',')) {
       const [code, discount] = entry.trim().split('=');
-      if (code && discount) promoCodes[code.toUpperCase()] = parseInt(discount); // ← parseInt, euros
+      if (code && discount) promoCodes[code.toUpperCase()] = parseFloat(discount);
     }
   }
 
@@ -25,6 +22,9 @@ export default async function handler(req, res) {
   if (promoCodes[code] === undefined)
     return res.status(400).json({ error: 'Code promo invalide' });
 
-  // Retourne discountPerItem (pas discountPercent) pour correspondre au front et à checkout.js
-  return res.status(200).json({ valid: true, code, discountPerItem: promoCodes[code] });
+  return res.status(200).json({
+    valid: true,
+    code,
+    discountPercent: promoCodes[code],
+  });
 }
