@@ -1,6 +1,5 @@
 // api/validate-promo.js
 // Vérifie un code promo sans créer de session Stripe
-// Appelé par le front au moment où l'utilisateur tape son code
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -13,13 +12,12 @@ export default async function handler(req, res) {
   if (!promoCode) return res.status(400).json({ error: 'Code manquant' });
 
   // Même source de vérité que checkout.js — env var PROMO_CODES
-  // Format : "ETE2025=0.10,SCOUT10=0.15" pour % de réduction
-  // → Pour ajouter/modifier/supprimer un code : modifie l'env var dans Vercel et redéploie
+  // Format : "ETE2025=5,SCOUT10=3"  (valeur = euros de remise par article)
   const promoCodes = {};
   if (process.env.PROMO_CODES) {
     for (const entry of process.env.PROMO_CODES.split(',')) {
       const [code, discount] = entry.trim().split('=');
-      if (code && discount) promoCodes[code.toUpperCase()] = parseFloat(discount);
+      if (code && discount) promoCodes[code.toUpperCase()] = parseInt(discount); // ← parseInt, euros
     }
   }
 
@@ -27,5 +25,6 @@ export default async function handler(req, res) {
   if (promoCodes[code] === undefined)
     return res.status(400).json({ error: 'Code promo invalide' });
 
-  return res.status(200).json({ valid: true, code, discountPercent: promoCodes[code] });
+  // Retourne discountPerItem (pas discountPercent) pour correspondre au front et à checkout.js
+  return res.status(200).json({ valid: true, code, discountPerItem: promoCodes[code] });
 }
