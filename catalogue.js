@@ -1,37 +1,138 @@
+// ─────────────────────────────────────────────
+//  CATALOGUE TRADISCOUT
+//  Source de vérité unique — front + API
+// ─────────────────────────────────────────────
+
+const COLLECTIONS = [
+  { id: 'scouts',  label: 'Scouts'  },
+  { id: 'saints',  label: 'Saints'  },
+  { id: 'humour',  label: 'Humour'  },
+];
+
 const TYPES = [
   { id: 'tshirt', label: 'T-Shirt', code: '1', price: 25 },
-  { id: 'sweat', label: 'Sweat', code: '2', price: 40 },
-  { id: 'hoodie', label: 'Hoodie', code: '3', price: 45 },
+  { id: 'sweat',  label: 'Sweat',   code: '2', price: 40 },
+  { id: 'hoodie', label: 'Hoodie',  code: '3', price: 45 },
 ];
 
 const COLORS = [
-  { id: 'blanc', label: 'Blanc', code: '1' },
-  { id: 'bleu', label: 'Marine', code: '2' },
+  { id: 'blanc', label: 'Blanc',  code: '1' },
+  { id: 'bleu',  label: 'Marine', code: '2' },
 ];
 
 const SIZES = ['S', 'M', 'L'];
 
+// ─── DESIGNS ───────────────────────────────
+// Chaque produit :
+//   id          → identifiant unique (string)
+//   key         → slug URL-safe
+//   label       → nom affiché
+//   description → courte phrase affichée dans la lightbox
+//   types       → sous-ensemble de TYPES disponibles
+//   colors      → sous-ensemble de COLORS disponibles
+//   images      → liste de noms de fichiers dans /images/
+//                 (n'importe quel nom, lifestyle ou pack shot)
+//   collection  → id d'une COLLECTION
+
 const DESIGNS = [
-  { id: '1', key: 'tradiscout', label: 'Tradiscout', description: 'Le logo historique du compte.\nPorte le blason avec fierté.', types: ["tshirt"], colors: ["blanc","bleu"] },
-  { id: '2', key: 'double-croix', label: 'Double Croix', description: 'Deux croix entrelacées, symbole de foi.\nSimple, fort, intemporel.', types: ["tshirt","sweat"], colors: ["blanc","bleu"] },
-  { id: '3', key: 'deus-vult', label: 'Deus Vult', description: 'Le cri de ralliement des croisés.\nPour ceux qui n\'ont pas peur d\'avancer.', types: ["tshirt","sweat","hoodie"], colors: ["blanc","bleu"] },
-  { id: '4', key: 'verso-lalto', label: 'Verso l\'Alto', description: 'Toujours plus haut — devise de scout.\nUn appel à dépasser ses limites.', types: ["tshirt","sweat","hoodie"], colors: ["blanc","bleu"] },
-  { id: '5', key: 'christus-rex', label: 'Christus Rex', description: 'Le Christ Roi, au centre de tout.\nDesign épuré pour un message fort.', types: ["tshirt","sweat","hoodie"], colors: ["blanc","bleu"] },
-  { id: '6', key: 'jpeuxpas', label: 'J\'peux pas j\'ai scout', description: 'La réponse classique du scout engagé.\nHumour et fierté mêlés.', types: ["tshirt","sweat","hoodie"], colors: ["blanc","bleu"] },
-  { id: '7', key: 'mode-grand-jeu', label: 'Mode Grand Jeu', description: 'Pour les nuits en forêt et les grandes aventures.\nMode grand jeu : activé.', types: ["tshirt"], colors: ["blanc","bleu"] },
-  { id: '8', key: 'braises', label: 'Braises Surgelées', description: 'Le feu sacré, même au cœur de l\'hiver.\nUn oxymore qui dit tout.', types: ["tshirt","sweat","hoodie"], colors: ["blanc","bleu"] },
-  { id: '9', key: 'st-michel', label: 'St Michel', description: 'Le prince des anges, patron des scouts.\nSon épée pointe vers le ciel.', types: ["tshirt","sweat","hoodie"], colors: ["blanc","bleu"] },
-  { id: '10', key: 'st-jean-marie-vianney', label: 'St Jean-Marie Vianney', description: 'Le saint curé d\'Ars, modèle de persévérance.\nPatron des prêtres et des âmes simples.', types: ["sweat","hoodie"], colors: ["blanc","bleu"] },
-  { id: '11', key: 'st-george', label: 'St George', description: 'Le chevalier saint Georges, terrasseur de dragons.\nCourage et droiture en bannière.', types: ["tshirt","sweat","hoodie"], colors: ["blanc","bleu"] },
+  {
+    id: '1', key: 'tradiscout', label: 'Tradiscout',
+    description: 'Le logo historique de la communauté.',
+    types:  ['tshirt'],
+    colors: ['blanc', 'bleu'],
+    images: ['1-1-tradiscout.png', '1-2-tradiscout.png'],
+    collection: 'scouts',
+  },
+  {
+    id: '2', key: 'double-croix', label: 'Double Croix',
+    description: 'Deux croix, une mission.',
+    types:  ['tshirt', 'sweat'],
+    colors: ['blanc', 'bleu'],
+    images: ['1-1-double-croix.png', '1-2-double-croix.png', '2-1-double-croix.png'],
+    collection: 'scouts',
+  },
+  {
+    id: '3', key: 'deus-vult', label: 'Deus Vult',
+    description: 'L\'élan des croisades, la foi d\'aujourd\'hui.',
+    types:  ['tshirt', 'sweat', 'hoodie'],
+    colors: ['blanc', 'bleu'],
+    images: ['1-1-deus-vult.png', '1-2-deus-vult.png', '2-2-deus-vult.png'],
+    collection: 'scouts',
+  },
+  {
+    id: '4', key: 'verso-lalto', label: 'Verso l\'Alto',
+    description: 'Vers le haut — devise des scouts Tradiscout.',
+    types:  ['tshirt', 'sweat', 'hoodie'],
+    colors: ['blanc', 'bleu'],
+    images: ['1-1-verso-lalto.png', '2-1-verso-lalto.png'],
+    collection: 'scouts',
+  },
+  {
+    id: '5', key: 'mode-grand-jeu', label: 'Mode Grand Jeu',
+    description: 'Pour les nuits sous la tente et les épopées en forêt.',
+    types:  ['tshirt'],
+    colors: ['blanc', 'bleu'],
+    images: ['1-2-mode-grand-jeu.png'],
+    collection: 'scouts',
+  },
+  {
+    id: '6', key: 'braises', label: 'Braises Surgelées',
+    description: 'Le feu de camp dans le freezer — tu vois le truc.',
+    types:  ['tshirt', 'sweat', 'hoodie'],
+    colors: ['blanc', 'bleu'],
+    images: ['1-1-braises.png', '2-1-braises.png'],
+    collection: 'scouts',
+  },
+  {
+    id: '7', key: 'christus-rex', label: 'Christus Rex',
+    description: 'Le Christ, roi de l\'univers.',
+    types:  ['tshirt', 'sweat', 'hoodie'],
+    colors: ['blanc', 'bleu'],
+    images: ['1-1-christus-rex.png', '1-2-christus-rex.png'],
+    collection: 'saints',
+  },
+  {
+    id: '8', key: 'st-michel', label: 'St Michel',
+    description: 'Saint Michel Archange, protège-nous au combat.',
+    types:  ['tshirt', 'sweat', 'hoodie'],
+    colors: ['blanc', 'bleu'],
+    images: ['1-1-st-michel.png', '2-2-st-michel.png'],
+    collection: 'saints',
+  },
+  {
+    id: '9', key: 'st-jean-marie-vianney', label: 'St Jean-Marie Vianney',
+    description: 'Patron des curés de campagne — et des scouts.',
+    types:  ['sweat', 'hoodie'],
+    colors: ['blanc', 'bleu'],
+    images: ['2-1-st-jean-marie-vianney.png', '3-2-st-jean-marie-vianney.png'],
+    collection: 'saints',
+  },
+  {
+    id: '10', key: 'st-george', label: 'St George',
+    description: 'Le chevalier, le dragon, la croix.',
+    types:  ['tshirt', 'sweat', 'hoodie'],
+    colors: ['blanc', 'bleu'],
+    images: ['1-1-st-george.png', '2-1-st-george.png'],
+    collection: 'saints',
+  },
+  {
+    id: '11', key: 'jpeuxpas', label: 'J\'peux pas j\'ai scout',
+    description: 'La seule excuse valable un samedi matin.',
+    types:  ['tshirt', 'sweat', 'hoodie'],
+    colors: ['blanc', 'bleu'],
+    images: ['1-1-jpeuxpas.png', '1-2-jpeuxpas.png', '2-2-jpeuxpas.png'],
+    collection: 'humour',
+  },
 ];
 
-const GRID_DEFAULT_TYPE  = 'sweat';
-const GRID_DEFAULT_COLOR = 'bleu';
+// ─── HELPERS ───────────────────────────────
 
-function imgSrc(typeId, colorId, designKey) {
-  const t = TYPES.find(x => x.id === typeId);
-  const c = COLORS.find(x => x.id === colorId);
-  return `${t.code}-${c.code}-${designKey}.png`;
+/** Première image d'un design (fallback carte grille) */
+function coverImg(designKey) {
+  const d = DESIGNS.find(x => x.key === designKey);
+  return d && d.images.length ? d.images[0] : 'placeholder.png';
 }
 
-if (typeof module !== 'undefined') module.exports = { TYPES, COLORS, SIZES, DESIGNS, imgSrc };
+if (typeof module !== 'undefined') {
+  module.exports = { COLLECTIONS, TYPES, COLORS, SIZES, DESIGNS, coverImg };
+}
