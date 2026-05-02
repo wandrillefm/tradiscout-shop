@@ -4,9 +4,9 @@
 // ─────────────────────────────────────────────
 
 const COLLECTIONS = [
-  { id: 'scouts',  label: 'Scouts'  },
-  { id: 'saints',  label: 'Saints'  },
-  { id: 'humour',  label: 'Humour'  },
+  { id: 'scouts',  label: 'Classiques'  },
+  { id: 'saints',  label: 'Chretien'  },
+  { id: 'humour',  label: '2nd deg'  },
 ];
 
 const TYPES = [
@@ -37,7 +37,7 @@ const SIZES = ['S', 'M', 'L'];
 const DESIGNS = [
   {
     id: '1', key: 'tradiscout', label: 'Tradiscout',
-    description: 'Le logo historique de la communauté.',
+    description: 'Rien de plus basique',
     types:  ['tshirt'],
     colors: ['blanc', 'bleu'],
     images: ['1-1-tradiscout.png', '1-2-tradiscout.png'],
@@ -45,7 +45,7 @@ const DESIGNS = [
   },
   {
     id: '2', key: 'double-croix', label: 'Double Croix',
-    description: 'Deux croix, une mission.',
+    description: 'Variante',
     types:  ['tshirt', 'sweat'],
     colors: ['blanc', 'bleu'],
     images: ['1-1-double-croix.png', '1-2-double-croix.png', '2-1-double-croix.png'],
@@ -53,7 +53,7 @@ const DESIGNS = [
   },
   {
     id: '3', key: 'deus-vult', label: 'Deus Vult',
-    description: 'L\'élan des croisades, la foi d\'aujourd\'hui.',
+    description: 'Comme au temps des templiers',
     types:  ['tshirt', 'sweat', 'hoodie'],
     colors: ['blanc', 'bleu'],
     images: ['1-1-deus-vult.png', '1-2-deus-vult.png', '2-2-deus-vult.png'],
@@ -61,7 +61,7 @@ const DESIGNS = [
   },
   {
     id: '4', key: 'verso-lalto', label: 'Verso l\'Alto',
-    description: 'Vers le haut — devise des scouts Tradiscout.',
+    description: 'Devise de Saint Pier Georgio Frassati',
     types:  ['tshirt', 'sweat', 'hoodie'],
     colors: ['blanc', 'bleu'],
     images: ['1-1-verso-lalto.png', '2-1-verso-lalto.png'],
@@ -69,23 +69,23 @@ const DESIGNS = [
   },
   {
     id: '5', key: 'mode-grand-jeu', label: 'Mode Grand Jeu',
-    description: 'Pour les nuits sous la tente et les épopées en forêt.',
+    description: 'Hans Zimmer dans les oreilles et un foulard dans la ceinture',
     types:  ['tshirt'],
     colors: ['blanc', 'bleu'],
     images: ['1-2-mode-grand-jeu.png'],
-    collection: 'scouts',
+    collection: 'humour',
   },
   {
     id: '6', key: 'braises', label: 'Braises Surgelées',
-    description: 'Le feu de camp dans le freezer — tu vois le truc.',
+    description: 'Le saint graal',
     types:  ['tshirt', 'sweat', 'hoodie'],
     colors: ['blanc', 'bleu'],
     images: ['1-1-braises.png', '2-1-braises.png'],
-    collection: 'scouts',
+    collection: 'humour',
   },
   {
     id: '7', key: 'christus-rex', label: 'Christus Rex',
-    description: 'Le Christ, roi de l\'univers.',
+    description: 'Mexique.',
     types:  ['tshirt', 'sweat', 'hoodie'],
     colors: ['blanc', 'bleu'],
     images: ['1-1-christus-rex.png', '1-2-christus-rex.png'],
@@ -93,7 +93,7 @@ const DESIGNS = [
   },
   {
     id: '8', key: 'st-michel', label: 'St Michel',
-    description: 'Saint Michel Archange, protège-nous au combat.',
+    description: 'Le goat',
     types:  ['tshirt', 'sweat', 'hoodie'],
     colors: ['blanc', 'bleu'],
     images: ['1-1-st-michel.png', '2-2-st-michel.png'],
@@ -101,7 +101,7 @@ const DESIGNS = [
   },
   {
     id: '9', key: 'st-jean-marie-vianney', label: 'St Jean-Marie Vianney',
-    description: 'Patron des curés de campagne — et des scouts.',
+    description: 'En esprit de sainteté',
     types:  ['sweat', 'hoodie'],
     colors: ['blanc', 'bleu'],
     images: ['2-1-st-jean-marie-vianney.png', '3-2-st-jean-marie-vianney.png'],
@@ -109,7 +109,7 @@ const DESIGNS = [
   },
   {
     id: '10', key: 'st-george', label: 'St George',
-    description: 'Le chevalier, le dragon, la croix.',
+    description: 'St patron des éclaireurs',
     types:  ['tshirt', 'sweat', 'hoodie'],
     colors: ['blanc', 'bleu'],
     images: ['1-1-st-george.png', '2-1-st-george.png'],
