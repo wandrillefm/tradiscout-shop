@@ -149,8 +149,8 @@
 
         .grid-wrap { max-width: 1100px; margin: 2rem auto; padding: 0 5% 2rem; }
         .grid {
-            display: grid; gap: 1px;
-            background: rgba(44,55,118,0.1); border: 1px solid rgba(44,55,118,0.1);
+            display: grid; gap: 16px;
+            background: transparent; border: none;
             grid-template-columns: repeat(4, 1fr);
         }
         .grid-card { background: white; cursor: pointer; overflow: hidden; display: flex; flex-direction: column; transition: box-shadow 0.2s; border: 1px solid rgba(44,55,118,0.1); }
@@ -219,6 +219,8 @@
         .cart-drawer.open { transform:translateX(0); }
         .cart-bg { position:fixed;inset:0;background:rgba(0,0,0,.35);display:none;z-index:350; }
         .drawer-header { display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem; }
+        .drawer-close { background:none;border:1px solid rgba(44,55,118,0.2);cursor:pointer;color:var(--navy);font-size:0.9rem;width:28px;height:28px;display:flex;align-items:center;justify-content:center;opacity:0.5;transition:opacity 0.15s, border-color 0.15s; }
+        .drawer-close:hover { opacity:1;border-color:var(--navy); }
 
         .cart-item-row { display:flex;align-items:flex-start;gap:12px;margin-bottom:1.2rem;border-bottom:1px solid #eee;padding-bottom:12px; }
         .cart-item-remove { background:none;border:none;color:#b94040;cursor:pointer;font-size:1.1rem;padding:0;opacity:.5;transition:opacity .2s;margin-top:-2px; }
@@ -257,7 +259,7 @@
         @media (max-width: 768px) {
             header { justify-content:center; }
             .main-nav { display:none; }
-            .grid { grid-template-columns:repeat(2,1fr) !important; }
+            .grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
             .lb-modal { grid-template-columns:1fr;max-height:95vh;overflow-y:auto; }
             .lb-config { border-left:none;border-top:1px solid rgba(44,55,118,.1);padding:1.2rem; }
             .tab-bar { display:flex; }
@@ -363,7 +365,7 @@
     <div class="cart-drawer" id="cartDrawer">
         <div class="drawer-header">
             <h2 style="font-family:'Uncial Antiqua';font-size:1.4rem">Mon Panier</h2>
-            <button onclick="closeCart()">✕</button>
+            <button class="drawer-close" onclick="closeCart()">✕</button>
         </div>
         <div id="cartItems" style="flex:1;overflow-y:auto"></div>
         <div style="border-top:1px solid #eee;padding-top:1rem">
@@ -474,7 +476,6 @@
             const grid = document.getElementById('grid');
             const filtered = DESIGNS.filter(d => d.collection === activeCollection);
             const minPrice = Math.min(...TYPES.map(t => t.price));
-            grid.style.gridTemplateColumns = `repeat(${Math.min(filtered.length, 4)}, 1fr)`;
             grid.innerHTML = filtered.map(d => `
                 <div class="grid-card" onclick="openLb('${d.key}')">
                     <div class="grid-card-img-wrap">
