@@ -78,16 +78,7 @@
             pointer-events: none;
         }
         .hero-eyebrow { font-size:.5rem;letter-spacing:.28em;text-transform:uppercase;color:var(--or);margin-bottom:28px;opacity:0;animation:fadeUp .7s ease .1s forwards;position:relative; }
-        .hero-title { 
-          font-family: 'Uncial Antiqua', serif; 
-          font-size: clamp(1.1rem, 7vw, 2.5rem); 
-          line-height: 1.05; 
-          color: white; 
-          margin-bottom: 28px; 
-          opacity: 0; 
-          animation: fadeUp .7s ease .25s forwards; 
-          position: relative; 
-        }
+        .hero-title { font-family:'Uncial Antiqua',serif;font-size:clamp(2.8rem,7vw,5.5rem);line-height:1.05;color:white;margin-bottom:28px;opacity:0;animation:fadeUp .7s ease .25s forwards;position:relative; }
         .hero-sub { font-size:.72rem;color:rgba(248,242,231,.8);line-height:1.9;max-width:460px;opacity:0;animation:fadeUp .7s ease .4s forwards;margin-bottom:48px;position:relative; }
         .hero-cta { display:inline-block;padding:14px 40px;border:1px solid white;color:white;text-decoration:none;font-size:.65rem;letter-spacing:.16em;text-transform:uppercase;transition:.2s;opacity:0;animation:fadeUp .7s ease .55s forwards;position:relative; }
         .hero-cta:hover { background:white;color:var(--navy); }
@@ -269,8 +260,12 @@
             header { justify-content:center; }
             .main-nav { display:none; }
             .grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
-            .lb-modal { grid-template-columns:1fr;max-height:95vh;overflow-y:auto; }
-            .lb-config { border-left:none;border-top:1px solid rgba(44,55,118,.1);padding:1.2rem; }
+            .lb-modal { grid-template-columns:1fr;max-height:85vh;overflow-y:auto; }
+            .lb-main-img-wrap { max-height:38vh; }
+            .lb-config { border-left:none;border-top:1px solid rgba(44,55,118,.1);padding:1rem; }
+            .lb-config .opt-group { gap:.2rem; }
+            .lb-title { font-size:1.1rem; }
+            .lb-overlay { padding:.5rem; align-items: flex-end; }
             .tab-bar { display:flex; }
             .cart-drawer { width:100%;padding-bottom:100px; }
             footer { padding-bottom:120px; }
@@ -298,7 +293,7 @@
     <div id="shop-curtain">
         <div class="curtain-content">
             <div class="curtain-title">En cours de préparation...</div>
-            <div class="curtain-sub">RDV sur insta pour plus</div>
+            <div class="curtain-sub">RDV sur insta pour +</div>
         </div>
         <div class="admin-unlock">
             <input type="password" id="adminInput" placeholder="Mot de passe" onkeypress="handleCode(event)">
@@ -311,14 +306,15 @@
 
         <div class="hero">
             <div class="hero-eyebrow">verso l'alto - 2026</div>
-            <div class="hero-title">Pour les scouts qui portent leur foi</div>
-            <div class="hero-sub">Confectionné en Savoie</div>
-            <a class="hero-cta" href="#catalogue" onclick="document.getElementById('catalogue').scrollIntoView({behavior:'smooth'});return false;">Voir les collections</a>
+            <div class="hero-title">Tradiscout</div>
+            <div class="hero-sub">Pour les scouts qui portent leur foi</div>
+            <a class="hero-cta" href="#catalogue" onclick="document.getElementById('catalogue').scrollIntoView({behavior:'smooth'});return false;">Voir la collection</a>
         </div>
 
         <div id="catalogue">
             <div class="section-header">
-                <div class="section-header-sub">Fabriqué et imprimé entièrement en France</div>
+                <div class="section-header-title"></div>
+                <div class="section-header-sub">Livraison &amp; TVA incluses</div>
             </div>
 
             <!-- COLLECTION TABS -->
@@ -494,7 +490,7 @@
                     </div>
                     <div class="grid-card-info">
                         <div class="grid-card-name">${d.label}</div>
-                  <!--      <div class="grid-card-price">à partir de ${minPrice} </div> -->
+                        <div class="grid-card-price">à partir de ${minPrice} €</div>
                     </div>
                 </div>
             `).join('');
