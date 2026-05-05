@@ -56,7 +56,7 @@ const DESIGNS = [
     description: 'Comme au temps des templiers',
     types:  ['tshirt', 'sweat'],
     colors: ['blanc', 'bleu'],
-    images: ['1-1-deus-vult.png', '1-2-deus-vult.png', '2-1-deus-vult.png', '2-2-deus-vult.png', '3-1-deus-vult.png', '3-2-deus-vult.png'],
+    images: ['1-1-deus-vult.png', '1-2-deus-vult.png', '2-1-deus-vult.png', '2-2-deus-vult.png'],
     collection: 'scouts',
   },
   {
@@ -64,7 +64,7 @@ const DESIGNS = [
     description: 'Devise de Saint Pier Georgio Frassati',
     types:  ['tshirt', 'sweat'],
     colors: ['blanc', 'bleu'],
-    images: ['1-1-verso-lalto.png', '1-2-verso-lalto.png', '2-1-verso-lalto.png', '2-2-verso-lalto.png', '3-1-verso-lalto.png', '3-2-verso-lalto.png'],
+    images: ['1-1-verso-lalto.png', '1-2-verso-lalto.png', '2-1-verso-lalto.png', '2-2-verso-lalto.png'],
     collection: 'scouts',
   },
   {
@@ -72,7 +72,7 @@ const DESIGNS = [
     description: 'Hans Zimmer dans les oreilles et un foulard dans la ceinture',
     types:  ['tshirt'],
     colors: ['blanc', 'bleu'],
-    images: ['1-1-mode-grand-jeu.png', '1-2-mode-grand-jeu.png', '2-1-mode-grand-jeu.png', '2-2-mode-grand-jeu.png', '3-1-mode-grand-jeu.png', '3-2-mode-grand-jeu.png'],
+    images: ['1-1-mode-grand-jeu.png', '1-2-mode-grand-jeu.png'],
     collection: 'humour',
   },
   {
